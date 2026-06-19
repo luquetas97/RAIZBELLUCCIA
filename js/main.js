@@ -181,8 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroVideo = document.querySelector('.hero__video');
   const TOTAL_FRAMES = 120;
   const frames = [];
-  let framesLoaded = 0;
   let canvas, ctx;
+  let lastFrame = -1;
+  let rafId = null;
 
   if (heroScrollContainer && window.innerWidth > 768) {
     // Reemplazar el video por un canvas
@@ -192,42 +193,53 @@ document.addEventListener('DOMContentLoaded', () => {
     else document.querySelector('.hero').prepend(canvas);
     ctx = canvas.getContext('2d');
 
-    // Precargar todos los frames
+    // Precargar todos los frames con Promise.all para control total
+    const framePromises = [];
     for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const img = new Image();
-      const num = String(i).padStart(4, '0');
-      img.src = `assets/frames/frame-${num}.jpg`;
-      img.onload = () => {
-        framesLoaded++;
-        if (framesLoaded === 1) {
-          // En cuanto el primer frame carga, dimensionar canvas y mostrarlo
-          canvas.width = frames[0].naturalWidth;
-          canvas.height = frames[0].naturalHeight;
-          ctx.drawImage(frames[0], 0, 0);
-          lastFrame = 0;
+      const promise = new Promise((resolve) => {
+        const img = new Image();
+        const num = String(i).padStart(4, '0');
+        img.src = `assets/frames/frame-${num}.jpg`;
+        
+        const handleLoad = () => {
+          resolve(img);
+        };
+        
+        img.onload = handleLoad;
+        img.onerror = handleLoad; // Resolver igual si falla
+        
+        // Si ya estaba cacheado, resolver inmediatamente
+        if (img.complete) {
+          resolve(img);
         }
-      };
-      // Si ya estaba cacheado del browser, onload no dispara — dibujarlo igual
-      if (img.complete) {
-        framesLoaded++;
-        if (framesLoaded === 1) {
-          canvas.width = img.naturalWidth;
-          canvas.height = img.naturalHeight;
-          ctx.drawImage(img, 0, 0);
-          lastFrame = 0;
-        }
-      }
-      frames[i] = img;
+      });
+      
+      framePromises.push(promise);
     }
 
-    let rafId = null;
-    let lastFrame = -1;
+    // Cargar primer frame apenas esté disponible
+    framePromises[0].then((img) => {
+      frames[0] = img;
+      if (img.complete && img.naturalWidth > 0) {
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        ctx.drawImage(img, 0, 0);
+        lastFrame = 0;
+      }
+    });
+
+    // Cargar todos los frames en paralelo
+    Promise.all(framePromises).then((loadedFrames) => {
+      loadedFrames.forEach((img, i) => {
+        frames[i] = img;
+      });
+    });
 
     const drawFrame = (index) => {
       const i = Math.max(0, Math.min(TOTAL_FRAMES - 1, index));
       if (i === lastFrame) return;
       lastFrame = i;
-      if (frames[i] && frames[i].complete) {
+      if (frames[i] && frames[i].complete && frames[i].naturalWidth > 0) {
         ctx.drawImage(frames[i], 0, 0);
       }
     };
