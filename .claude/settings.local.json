@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp *)",
+      "mcp__magic__21st_magic_component_inspiration",
+      "Bash(ffmpeg -version)",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}
