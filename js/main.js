@@ -2,6 +2,12 @@
    RAIZ — Main JS
    ============================================= */
 
+// Globales de control — se limpian antes de cada re-init para que F5
+// no acumule intervalos y RAF callbacks del ciclo anterior
+let globalScrollRafId  = null;
+let globalAutoTimer    = null;
+let globalProcesoTimer = null;
+
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---- NAV: scroll effect ---- */
@@ -80,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---- TICKER: duplicate for seamless loop ---- */
   const tickerTrack = document.querySelector('.ticker__track');
-  if (tickerTrack) {
+  if (tickerTrack && !tickerTrack.parentElement.querySelector('[aria-hidden="true"]')) {
     const clone = tickerTrack.cloneNode(true);
     clone.setAttribute('aria-hidden', 'true');
     tickerTrack.parentElement.appendChild(clone);
@@ -94,19 +100,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const SLIDE_COUNT   = 3;
   const AUTO_DELAY    = 5000;
   let currentSlide    = 0;
-  let autoTimer       = null;
 
-  // Barra de progreso
-  const progressBar = document.createElement('div');
-  progressBar.className = 'valores__progress';
-  document.querySelector('.valores')?.appendChild(progressBar);
+  // Barra de progreso — reusar si ya existe (F5 reload con DOM cacheado)
+  let progressBar = document.querySelector('.valores__progress');
+  if (!progressBar) {
+    progressBar = document.createElement('div');
+    progressBar.className = 'valores__progress';
+    document.querySelector('.valores')?.appendChild(progressBar);
+  }
 
   const goTo = (index) => {
     currentSlide = (index + SLIDE_COUNT) % SLIDE_COUNT;
     valoresSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
     valoresDots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
 
-    // Reset + animar barra de progreso
     progressBar.style.transition = 'none';
     progressBar.style.width = '0%';
     requestAnimationFrame(() => {
@@ -118,30 +125,26 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const startAuto = () => {
-    clearInterval(autoTimer);
-    autoTimer = setInterval(() => goTo(currentSlide + 1), AUTO_DELAY);
+    if (globalAutoTimer) clearInterval(globalAutoTimer);
+    globalAutoTimer = setInterval(() => goTo(currentSlide + 1), AUTO_DELAY);
   };
 
-  const resetAuto = () => { startAuto(); };
-
-  prevBtn?.addEventListener('click', () => { goTo(currentSlide - 1); resetAuto(); });
-  nextBtn?.addEventListener('click', () => { goTo(currentSlide + 1); resetAuto(); });
+  prevBtn?.addEventListener('click', () => { goTo(currentSlide - 1); startAuto(); });
+  nextBtn?.addEventListener('click', () => { goTo(currentSlide + 1); startAuto(); });
   valoresDots.forEach((dot, i) => {
-    dot.addEventListener('click', () => { goTo(i); resetAuto(); });
+    dot.addEventListener('click', () => { goTo(i); startAuto(); });
   });
 
-  // Swipe touch
   let touchStartX = 0;
   document.querySelector('.valores')?.addEventListener('touchstart', e => {
     touchStartX = e.touches[0].clientX;
   }, { passive: true });
   document.querySelector('.valores')?.addEventListener('touchend', e => {
     const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) { goTo(currentSlide + (diff > 0 ? 1 : -1)); resetAuto(); }
+    if (Math.abs(diff) > 50) { goTo(currentSlide + (diff > 0 ? 1 : -1)); startAuto(); }
   });
 
-  // Pausar en hover
-  document.querySelector('.valores')?.addEventListener('mouseenter', () => clearInterval(autoTimer));
+  document.querySelector('.valores')?.addEventListener('mouseenter', () => clearInterval(globalAutoTimer));
   document.querySelector('.valores')?.addEventListener('mouseleave', () => startAuto());
 
   goTo(0);
@@ -180,70 +183,58 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroScrollContainer = document.querySelector('.hero-scroll-container');
   const heroVideo = document.querySelector('.hero__video');
   const TOTAL_FRAMES = 120;
-  const frames = [];
-  let framesLoaded = 0;
-  let canvas, ctx;
+  const frames = new Array(TOTAL_FRAMES);
 
   if (heroScrollContainer && window.innerWidth > 768) {
-    // Reemplazar el video por un canvas
-    canvas = document.createElement('canvas');
+    const canvas = document.createElement('canvas');
     canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;';
     if (heroVideo) heroVideo.replaceWith(canvas);
     else document.querySelector('.hero').prepend(canvas);
-    ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
 
-    // Precargar todos los frames
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
+    let lastFrame = -1;
+
+    const loadFrameImg = (i) => new Promise((resolve) => {
       const img = new Image();
       const num = String(i).padStart(4, '0');
       img.src = `assets/frames/frame-${num}.jpg`;
-      img.onload = () => {
-        framesLoaded++;
-        if (framesLoaded === 1) {
-          // En cuanto el primer frame carga, dimensionar canvas y mostrarlo
-          canvas.width = frames[0].naturalWidth;
-          canvas.height = frames[0].naturalHeight;
-          ctx.drawImage(frames[0], 0, 0);
-          lastFrame = 0;
-        }
-      };
-      // Si ya estaba cacheado del browser, onload no dispara — dibujarlo igual
       if (img.complete) {
-        framesLoaded++;
-        if (framesLoaded === 1) {
-          canvas.width = img.naturalWidth;
-          canvas.height = img.naturalHeight;
-          ctx.drawImage(img, 0, 0);
-          lastFrame = 0;
-        }
+        frames[i] = img;
+        resolve(img);
+      } else {
+        img.onload  = () => { frames[i] = img; resolve(img); };
+        img.onerror = () => resolve(null);
       }
-      frames[i] = img;
-    }
-
-    let rafId = null;
-    let lastFrame = -1;
+    });
 
     const drawFrame = (index) => {
       const i = Math.max(0, Math.min(TOTAL_FRAMES - 1, index));
       if (i === lastFrame) return;
       lastFrame = i;
-      if (frames[i] && frames[i].complete) {
-        ctx.drawImage(frames[i], 0, 0);
-      }
+      if (frames[i] && frames[i].complete) ctx.drawImage(frames[i], 0, 0);
     };
 
     const scrub = () => {
       const rect = heroScrollContainer.getBoundingClientRect();
       const scrollable = heroScrollContainer.offsetHeight - window.innerHeight;
       const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
-      const frameIndex = Math.round(progress * (TOTAL_FRAMES - 1));
-      drawFrame(frameIndex);
-      rafId = null;
+      drawFrame(Math.round(progress * (TOTAL_FRAMES - 1)));
+      globalScrollRafId = null;
     };
 
     window.addEventListener('scroll', () => {
-      if (!rafId) rafId = requestAnimationFrame(scrub);
+      if (!globalScrollRafId) globalScrollRafId = requestAnimationFrame(scrub);
     }, { passive: true });
+
+    // Frame 0 primero — inicia canvas en cuanto carga; resto en background
+    loadFrameImg(0).then(img => {
+      if (!img) return;
+      canvas.width  = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      ctx.drawImage(img, 0, 0);
+      lastFrame = 0;
+    });
+    for (let i = 1; i < TOTAL_FRAMES; i++) loadFrameImg(i);
 
     scrub();
   }
@@ -265,7 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (procesoTabs.length) {
     let procesoIdx = 0;
-    let procesoTimer = null;
 
     const procesoGoTo = (idx) => {
       procesoIdx = ((idx % procesoTabs.length) + procesoTabs.length) % procesoTabs.length;
@@ -273,8 +263,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const procesoStartAuto = () => {
-      clearInterval(procesoTimer);
-      procesoTimer = setInterval(() => procesoGoTo(procesoIdx + 1), 4000);
+      if (globalProcesoTimer) clearInterval(globalProcesoTimer);
+      globalProcesoTimer = setInterval(() => procesoGoTo(procesoIdx + 1), 4000);
     };
 
     procesoTabs.forEach((tab, i) => {
@@ -284,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const procesoSection = document.querySelector('.proceso__tabs');
-    procesoSection?.addEventListener('mouseenter', () => clearInterval(procesoTimer));
+    procesoSection?.addEventListener('mouseenter', () => clearInterval(globalProcesoTimer));
     procesoSection?.addEventListener('mouseleave', procesoStartAuto);
 
     procesoGoTo(0);
