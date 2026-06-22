@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const P_COUNT    = 4;               // partículas por evento
     const P_LIFE     = 420;             // ms que vive cada partícula
     const P_SPREAD   = 22;              // px — radio de dispersión al nacer
-    const P_COLOR    = [212, 188, 158]; // RGB color del polvo de madera
+    const P_COLOR    = [115, 68, 32];   // RGB color del polvo de madera
     const P_THROTTLE = 30;              // ms mínimo entre tandas de partículas
     // ───────────────────────────────────────────────────────────────────────
 
@@ -354,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mouseenter', () => ring.classList.add('active'));
 
     // Agrandar ring sobre elementos interactivos
-    document.querySelectorAll('a, button, .curso-card, .valores__slide').forEach(el => {
+    document.querySelectorAll('a, button, .curso-card, .valores__slide, img').forEach(el => {
       el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
       el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
     });
