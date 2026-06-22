@@ -181,9 +181,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroVideo = document.querySelector('.hero__video');
   const TOTAL_FRAMES = 120;
   const frames = [];
+  let framesLoaded = 0;
   let canvas, ctx;
-  let lastFrame = -1;
-  let rafId = null;
 
   if (heroScrollContainer && window.innerWidth > 768) {
     // Reemplazar el video por un canvas
@@ -193,53 +192,42 @@ document.addEventListener('DOMContentLoaded', () => {
     else document.querySelector('.hero').prepend(canvas);
     ctx = canvas.getContext('2d');
 
-    // Precargar todos los frames con Promise.all para control total
-    const framePromises = [];
+    // Precargar todos los frames
     for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const promise = new Promise((resolve) => {
-        const img = new Image();
-        const num = String(i).padStart(4, '0');
-        img.src = `assets/frames/frame-${num}.jpg`;
-        
-        const handleLoad = () => {
-          resolve(img);
-        };
-        
-        img.onload = handleLoad;
-        img.onerror = handleLoad; // Resolver igual si falla
-        
-        // Si ya estaba cacheado, resolver inmediatamente
-        if (img.complete) {
-          resolve(img);
+      const img = new Image();
+      const num = String(i).padStart(4, '0');
+      img.src = `assets/frames/frame-${num}.jpg`;
+      img.onload = () => {
+        framesLoaded++;
+        if (framesLoaded === 1) {
+          // En cuanto el primer frame carga, dimensionar canvas y mostrarlo
+          canvas.width = frames[0].naturalWidth;
+          canvas.height = frames[0].naturalHeight;
+          ctx.drawImage(frames[0], 0, 0);
+          lastFrame = 0;
         }
-      });
-      
-      framePromises.push(promise);
+      };
+      // Si ya estaba cacheado del browser, onload no dispara — dibujarlo igual
+      if (img.complete) {
+        framesLoaded++;
+        if (framesLoaded === 1) {
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          ctx.drawImage(img, 0, 0);
+          lastFrame = 0;
+        }
+      }
+      frames[i] = img;
     }
 
-    // Cargar primer frame apenas esté disponible
-    framePromises[0].then((img) => {
-      frames[0] = img;
-      if (img.complete && img.naturalWidth > 0) {
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        ctx.drawImage(img, 0, 0);
-        lastFrame = 0;
-      }
-    });
-
-    // Cargar todos los frames en paralelo
-    Promise.all(framePromises).then((loadedFrames) => {
-      loadedFrames.forEach((img, i) => {
-        frames[i] = img;
-      });
-    });
+    let rafId = null;
+    let lastFrame = -1;
 
     const drawFrame = (index) => {
       const i = Math.max(0, Math.min(TOTAL_FRAMES - 1, index));
       if (i === lastFrame) return;
       lastFrame = i;
-      if (frames[i] && frames[i].complete && frames[i].naturalWidth > 0) {
+      if (frames[i] && frames[i].complete) {
         ctx.drawImage(frames[i], 0, 0);
       }
     };
@@ -272,26 +260,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ---- PROCESO steps: stagger on scroll ---- */
-  const procesoSteps = document.querySelectorAll('.proceso__step');
-  const procesoObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        const idx = Array.from(procesoSteps).indexOf(entry.target);
-        setTimeout(() => {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }, idx * 100);
-        procesoObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
+  /* ---- PROCESO expanding tabs ---- */
+  const procesoTabs = document.querySelectorAll('.proceso__tab');
 
-  procesoSteps.forEach(step => {
-    step.style.opacity = '0';
-    step.style.transform = 'translateY(30px)';
-    step.style.transition = 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1), background 0.4s ease';
-    procesoObserver.observe(step);
-  });
+  if (procesoTabs.length) {
+    let procesoIdx = 0;
+    let procesoTimer = null;
+
+    const procesoGoTo = (idx) => {
+      procesoIdx = ((idx % procesoTabs.length) + procesoTabs.length) % procesoTabs.length;
+      procesoTabs.forEach((t, i) => t.classList.toggle('active', i === procesoIdx));
+    };
+
+    const procesoStartAuto = () => {
+      clearInterval(procesoTimer);
+      procesoTimer = setInterval(() => procesoGoTo(procesoIdx + 1), 4000);
+    };
+
+    procesoTabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        if (i !== procesoIdx) { procesoGoTo(i); procesoStartAuto(); }
+      });
+    });
+
+    const procesoSection = document.querySelector('.proceso__tabs');
+    procesoSection?.addEventListener('mouseenter', () => clearInterval(procesoTimer));
+    procesoSection?.addEventListener('mouseleave', procesoStartAuto);
+
+    procesoGoTo(0);
+    procesoStartAuto();
+  }
 
 });

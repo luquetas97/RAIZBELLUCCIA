@@ -12,6 +12,7 @@
   --teal:        #2d6b5e;
   --mustard:     #c9a227;
   --terracotta:  #c4623a;
+  --plum:        #1c0e30;
   --white:       #ffffff;
   --text-dark:   #1a1a1a;
 
@@ -236,8 +237,8 @@ a {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to right, rgba(20,40,35,0.82) 0%, rgba(20,40,35,0.4) 45%, transparent 70%),
-    linear-gradient(to bottom, rgba(26,53,48,0.2) 0%, rgba(26,53,48,0.1) 40%, rgba(26,53,48,0.65) 100%);
+    linear-gradient(to right, rgba(20,40,35,0.80) 0%, rgba(20,40,35,0.25) 35%, transparent 52%),
+    linear-gradient(to top, rgba(18,35,30,0.4) 0%, transparent 30%);
   z-index: 1;
 }
 
@@ -577,13 +578,34 @@ a {
   background: var(--white);
 }
 
-/* Cápsula (oscura con texto blanco) → blanco */
-.capsula .section__label {
+.section--plum {
+  background: var(--plum);
+  color: var(--cream);
+}
+
+.section--plum .section__label {
   color: var(--white);
 }
 
-.capsula .section__label::before {
+.section--plum .section__label::before {
   background: var(--white);
+}
+
+/* Sección terracotta → blanco */
+.section--terracotta {
+  background: var(--terracotta);
+}
+
+.section--terracotta .section__label {
+  color: var(--white);
+}
+
+.section--terracotta .section__label::before {
+  background: var(--white);
+}
+
+.section--terracotta .section__heading {
+  color: var(--white);
 }
 
 /* Contacto (sección crema) → terracota, ya cubierto por default */
@@ -643,7 +665,7 @@ a {
 .about__text p:not(.section__label) {
   font-family: var(--font-body);
   font-size: clamp(15px, 1.4vw, 18px);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.7;
   color: rgba(26,26,26,0.75);
   margin-top: 28px;
@@ -671,8 +693,10 @@ a {
 .about__quote {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(24px, 3vw, 38px);
-  line-height: 1.3;
+  font-weight: 700;
+  font-size: clamp(15px, 1.5vw, 21px);
+  line-height: 1.35;
+  text-transform: uppercase;
   color: var(--dark);
   border-left: 2px solid var(--terracotta);
   padding-left: 28px;
@@ -685,12 +709,70 @@ a {
 
 .about__img-main {
   width: 100%;
-  aspect-ratio: 3/4;
+  aspect-ratio: 1;
   background: var(--cream-dark);
   border-radius: 2px;
   overflow: hidden;
   position: relative;
 }
+
+/* Slides crossfade */
+.about__slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.about__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about__slide--2 {
+  background: var(--teal);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.about__slide--3 {
+  background: var(--dark);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.about__slide-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  padding: 20px;
+}
+
+@keyframes cf-slide-1 {
+  0%, 24%    { opacity: 1; }
+  33%, 89%   { opacity: 0; }
+  100%       { opacity: 1; }
+}
+@keyframes cf-slide-2 {
+  0%, 24%    { opacity: 0; }
+  33%, 57%   { opacity: 1; }
+  66%, 100%  { opacity: 0; }
+}
+@keyframes cf-slide-3 {
+  0%, 57%    { opacity: 0; }
+  66%, 90%   { opacity: 1; }
+  100%       { opacity: 0; }
+}
+
+.about__slide--1 { animation: cf-slide-1 9s ease-in-out infinite; }
+.about__slide--2 { animation: cf-slide-2 9s ease-in-out infinite; }
+.about__slide--3 { animation: cf-slide-3 9s ease-in-out infinite; }
 
 .about__img-accent {
   position: absolute;
@@ -766,54 +848,59 @@ a {
    RESTAURACIÓN / SERVICIO
    ============================================= */
 
-.proceso__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
+/* Expanding accordion tabs */
+.proceso__tabs {
+  display: flex;
+  gap: 12px;
+  height: 420px;
   margin-top: 80px;
-  background: rgba(255,255,255,0.08);
 }
 
-.proceso__step {
-  background: var(--terracotta);
-  padding: 56px 40px;
+.proceso__tab {
   position: relative;
+  flex: 1;
+  background: var(--terracotta);
+  border-radius: 2px;
   overflow: hidden;
-  cursor: default;
-  transition: background 0.4s ease, transform 0.4s var(--ease-out), box-shadow 0.4s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 36px 32px;
+  transition: flex 0.65s cubic-bezier(0.16,1,0.3,1), background 0.4s ease;
 }
 
-/* Sheen sweep — diagonal light that crosses on hover */
-.proceso__step::after {
+.proceso__tab:not(.active):hover {
+  background: #b55530;
+}
+
+.proceso__tab.active {
+  flex: 3.5;
+  background: #a84e2d;
+  cursor: default;
+}
+
+/* Sheen sweep on hover */
+.proceso__tab::after {
   content: '';
   position: absolute;
   top: 0;
   left: -75%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255,255,255,0.1) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
   transform: skewX(-15deg);
   transition: left 0.6s var(--ease-out);
   pointer-events: none;
   z-index: 2;
 }
 
-.proceso__step:hover {
-  background: #a84e2d;
-  transform: translateY(-4px);
-  box-shadow: 0 24px 48px rgba(0,0,0,0.25);
-}
-
-.proceso__step:hover::after {
+.proceso__tab:not(.active):hover::after {
   left: 125%;
 }
 
-.proceso__step::before {
+/* Mustard accent line */
+.proceso__tab::before {
   content: '';
   position: absolute;
   bottom: 0;
@@ -823,32 +910,80 @@ a {
   background: var(--mustard);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.5s var(--ease-out);
+  transition: transform 0.55s var(--ease-out);
 }
 
-.proceso__step:hover {
-  background: #a84e2d;
-}
-
-.proceso__step:hover::before {
+.proceso__tab.active::before {
   transform: scaleX(1);
 }
 
-.proceso__number {
+/* Decorative number */
+.proceso__tab-num {
+  position: absolute;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 80px;
   font-weight: 300;
-  color: rgba(255,255,255,0.12);
   line-height: 1;
-  margin-bottom: -20px;
-  transform-origin: left center;
-  transition: color 0.4s ease, transform 0.4s var(--ease-out);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  color: rgba(255,255,255,0.55);
+  white-space: nowrap;
+  transition:
+    top 0.55s cubic-bezier(0.16,1,0.3,1),
+    left 0.55s cubic-bezier(0.16,1,0.3,1),
+    transform 0.55s cubic-bezier(0.16,1,0.3,1),
+    font-size 0.55s cubic-bezier(0.16,1,0.3,1),
+    color 0.55s ease;
 }
 
-.proceso__step:hover .proceso__number {
-  color: rgba(255,255,255,0.22);
-  transform: translateX(6px) scale(1.18);
+.proceso__tab.active .proceso__tab-num {
+  top: 24px;
+  left: 32px;
+  transform: none;
+  font-size: 100px;
+  color: rgba(255,255,255,0.09);
+}
+
+/* Vertical step label (visible when collapsed) */
+.proceso__tab-label {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.proceso__tab.active .proceso__tab-label {
+  opacity: 0;
+}
+
+/* Content (fades in when active) */
+.proceso__tab-body {
+  position: relative;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition-delay: 0s;
+}
+
+.proceso__tab.active .proceso__tab-body {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.25s;
 }
 
 .proceso__title {
@@ -869,11 +1004,6 @@ a {
   letter-spacing: -0.01em;
   color: var(--white);
   text-transform: uppercase;
-  transition: transform 0.4s var(--ease-out);
-}
-
-.proceso__step:hover .proceso__heading {
-  transform: translateY(-3px);
 }
 
 .proceso__text {
@@ -883,25 +1013,7 @@ a {
   line-height: 1.7;
   color: rgba(255,255,255,0.78);
   margin-top: 20px;
-}
-
-.proceso__icon {
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.3s ease, background 0.3s ease;
-}
-
-.proceso__step:hover .proceso__icon {
-  border-color: rgba(255,255,255,0.6);
-  background: rgba(255,255,255,0.1);
+  max-width: 380px;
 }
 
 .proceso__cta {
@@ -1079,133 +1191,137 @@ a {
 
 .cursos__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
+/* Card editorial — imagen full-bleed con overlay */
 .curso-card {
-  background: var(--white);
-  border-radius: 2px;
+  position: relative;
   overflow: hidden;
-  transition: transform 0.4s var(--ease-out), box-shadow 0.4s ease;
+  border-radius: 2px;
+  aspect-ratio: 2/3;
   cursor: pointer;
 }
 
-.curso-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 32px 64px rgba(26,53,48,0.12);
+/* Gradient overlay bottom-up */
+.curso-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(18,35,30,0.92) 0%,
+    rgba(18,35,30,0.55) 45%,
+    transparent 70%
+  );
+  z-index: 1;
+  transition: opacity 0.4s ease;
 }
 
 .curso-card__img {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  aspect-ratio: 4/3;
-  position: relative;
-  overflow: hidden;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
 }
 
-.curso-card__img .placeholder-img {
-  background: linear-gradient(135deg, var(--teal) 0%, var(--dark) 100%);
-}
-
-.curso-card:nth-child(2) .curso-card__img .placeholder-img {
-  background: linear-gradient(135deg, var(--mustard) 0%, var(--terracotta) 100%);
-}
-
-.curso-card:nth-child(3) .curso-card__img .placeholder-img {
-  background: linear-gradient(135deg, var(--terracotta) 0%, #8b3a20 100%);
-}
-
-.curso-card:nth-child(4) .curso-card__img .placeholder-img {
-  background: linear-gradient(135deg, var(--dark-mid) 0%, var(--teal) 100%);
+.curso-card:hover .curso-card__img {
+  transform: scale(1.06);
 }
 
 .curso-card__tag {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
   font-family: var(--font-body);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--white);
-  background: rgba(26,53,48,0.7);
-  backdrop-filter: blur(8px);
-  padding: 5px 10px;
+  background: rgba(26,53,48,0.65);
+  backdrop-filter: blur(10px);
+  padding: 5px 12px;
   border-radius: 2px;
+  transition: opacity 0.4s ease;
 }
 
 .curso-card__body {
-  padding: 24px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px;
+  z-index: 2;
 }
 
 .curso-card__level {
   font-family: var(--font-body);
   font-size: 10px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: var(--mustard);
   margin-bottom: 8px;
 }
 
 .curso-card__title {
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: 17px;
-  line-height: 1.25;
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.2;
   letter-spacing: -0.01em;
-  color: var(--dark);
-  margin-bottom: 10px;
-}
-
-.curso-card__desc {
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 300;
-  line-height: 1.6;
-  color: rgba(26,26,26,0.55);
+  color: var(--white);
 }
 
 .curso-card__footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(26,26,26,0.07);
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.curso-card:hover .curso-card__footer {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .curso-card__price {
   font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 16px;
-  color: var(--dark);
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--white);
 }
 
 .curso-card__price span {
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 300;
-  color: rgba(26,26,26,0.4);
+  color: rgba(255,255,255,0.5);
 }
 
 .curso-card__arrow {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: var(--cream);
+  border: 1px solid rgba(255,255,255,0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.25s ease;
+  transition: background 0.25s ease, border-color 0.25s ease;
 }
 
 .curso-card:hover .curso-card__arrow {
-  background: var(--terracotta);
-}
-
-.curso-card:hover .curso-card__arrow svg {
-  stroke: var(--white);
+  background: var(--mustard);
+  border-color: var(--mustard);
 }
 
 /* =============================================

@@ -66,8 +66,6 @@
     ></video>
     <div class="hero__video-overlay"></div>
 
-    <div class="hero__circle"></div>
-
     <div class="hero__content">
       <h1 class="hero__title">
         <span class="line"><span>Diseñamos</span></span>
@@ -147,7 +145,7 @@
         </p>
 
         <blockquote class="about__quote reveal reveal-delay-3">
-          "Restaurar no es volver atrás,<br>es darle una nueva oportunidad<br>al origen."
+          "Restaurar no es volver atrás, es darle<br>una nueva oportunidad al origen."
         </blockquote>
 
         <div class="about__stats">
@@ -175,13 +173,100 @@
 
       <div class="about__visual reveal reveal-delay-2">
         <div class="about__img-main">
-          <img src="assets/images/Foto del taller.png?v=2" alt="Foto del taller RAIZ" style="width:100%;height:100%;object-fit:cover;">
+          <div class="about__slide about__slide--1">
+            <img src="assets/images/Foto del taller.png?v=2" alt="Foto del taller RAIZ">
+          </div>
+          <div class="about__slide about__slide--2">
+            <img src="assets/images/Proceso.png" alt="Proceso RAIZ">
+          </div>
+          <div class="about__slide about__slide--3">
+            <img src="assets/images/Detalle2.png" alt="Detalle RAIZ">
+          </div>
         </div>
         <div class="about__img-accent">
           <img src="assets/images/Detalle.png" alt="Detalle de pieza RAIZ" style="width:100%;height:100%;object-fit:cover;">
         </div>
       </div>
 
+    </div>
+  </section>
+
+
+  <!-- ================================
+       CURSOS
+       ================================ -->
+  <section class="section section--terracotta grain-dark" id="cursos">
+    <div style="max-width:1400px;margin:0 auto;">
+
+      <div class="cursos__header">
+        <div>
+          <p class="section__label reveal">Formación</p>
+          <h2 class="section__heading reveal reveal-delay-1">
+            Cursos<br><em style="font-family:var(--font-serif);font-style:italic;font-weight:600;color:var(--mustard);text-transform:none;">& talleres</em>
+          </h2>
+        </div>
+        <a href="#contacto" class="btn-ghost reveal reveal-delay-2" style="color:var(--white);border-color:rgba(255,255,255,0.4);">
+          Ver todos los cursos →
+        </a>
+      </div>
+
+      <div class="cursos__grid">
+
+        <!-- Curso 1 -->
+        <div class="curso-card reveal">
+          <img src="assets/images/Restauración básica de muebles.png" alt="Restauración básica de muebles" class="curso-card__img">
+          <span class="curso-card__tag">Presencial · Buenos Aires</span>
+          <div class="curso-card__body">
+            <p class="curso-card__level">Nivel inicial</p>
+            <h3 class="curso-card__title">Restauración básica de muebles</h3>
+            <div class="curso-card__footer">
+              <span class="curso-card__price">$45.000 <span>/ 4 clases</span></span>
+              <div class="curso-card__arrow">
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M1 7h12M8 2l5 5-5 5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Curso 2 -->
+        <div class="curso-card reveal reveal-delay-1">
+          <img src="assets/images/Tapicería contemporánea.png" alt="Tapicería contemporánea" class="curso-card__img">
+          <span class="curso-card__tag">Presencial · Buenos Aires</span>
+          <div class="curso-card__body">
+            <p class="curso-card__level">Nivel intermedio</p>
+            <h3 class="curso-card__title">Tapicería contemporánea</h3>
+            <div class="curso-card__footer">
+              <span class="curso-card__price">$68.000 <span>/ 6 clases</span></span>
+              <div class="curso-card__arrow">
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M1 7h12M8 2l5 5-5 5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Curso 3 -->
+        <div class="curso-card reveal reveal-delay-2">
+          <img src="assets/images/Acabados & protección.png" alt="Acabados & protección" class="curso-card__img">
+          <span class="curso-card__tag">Presencial · Buenos Aires</span>
+          <div class="curso-card__body">
+            <p class="curso-card__level">Nivel intermedio</p>
+            <h3 class="curso-card__title">Acabados & protección</h3>
+            <div class="curso-card__footer">
+              <span class="curso-card__price">$52.000 <span>/ 4 clases</span></span>
+              <div class="curso-card__arrow">
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M1 7h12M8 2l5 5-5 5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 
@@ -201,51 +286,45 @@
         respetando su historia mientras la proyecta hacia el presente.
       </p>
 
-      <div class="proceso__grid">
+      <div class="proceso__tabs reveal reveal-delay-2">
 
-        <div class="proceso__step">
-          <div class="proceso__number">01</div>
-          <div class="proceso__icon" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.2">
-              <circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/>
-            </svg>
+        <div class="proceso__tab active">
+          <span class="proceso__tab-num">01</span>
+          <span class="proceso__tab-label">Diagnóstico</span>
+          <div class="proceso__tab-body">
+            <p class="proceso__title">Primera etapa</p>
+            <h3 class="proceso__heading">Diagnóstico<br>profesional</h3>
+            <p class="proceso__text">
+              Evaluamos el estado estructural de cada pieza: ensambles, maderas,
+              recubrimientos y daños. Un informe detallado antes de comenzar cualquier intervención.
+            </p>
           </div>
-          <p class="proceso__title">Primera etapa</p>
-          <h3 class="proceso__heading">Diagnóstico<br>profesional</h3>
-          <p class="proceso__text">
-            Evaluamos el estado estructural de cada pieza: ensambles, maderas,
-            recubrimientos y daños. Un informe detallado antes de comenzar cualquier intervención.
-          </p>
         </div>
 
-        <div class="proceso__step">
-          <div class="proceso__number">02</div>
-          <div class="proceso__icon" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.2">
-              <path d="M3 13l3-3 7-7-3-3-7 7-3 3 3 3z"/><path d="M10 3l3 3"/>
-            </svg>
+        <div class="proceso__tab">
+          <span class="proceso__tab-num">02</span>
+          <span class="proceso__tab-label">Reparación</span>
+          <div class="proceso__tab-body">
+            <p class="proceso__title">Segunda etapa</p>
+            <h3 class="proceso__heading">Reparación<br>estructural</h3>
+            <p class="proceso__text">
+              Intervenimos ensambles, reforzamos la estructura y tratamos la madera
+              con los métodos y materiales más adecuados para cada tipo de pieza.
+            </p>
           </div>
-          <p class="proceso__title">Segunda etapa</p>
-          <h3 class="proceso__heading">Reparación<br>estructural</h3>
-          <p class="proceso__text">
-            Intervenimos ensambles, reforzamos la estructura y tratamos la madera
-            con los métodos y materiales más adecuados para cada tipo de pieza.
-          </p>
         </div>
 
-        <div class="proceso__step">
-          <div class="proceso__number">03</div>
-          <div class="proceso__icon" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.2">
-              <path d="M2 14l5-5"/><circle cx="10" cy="6" r="4"/>
-            </svg>
+        <div class="proceso__tab">
+          <span class="proceso__tab-num">03</span>
+          <span class="proceso__tab-label">Rediseño</span>
+          <div class="proceso__tab-body">
+            <p class="proceso__title">Tercera etapa</p>
+            <h3 class="proceso__heading">Rediseño<br>estético</h3>
+            <p class="proceso__text">
+              Acabados vibrantes y contemporáneos que respetan la identidad original
+              de la pieza. El contraste entre la antigüedad del mueble y la modernidad de la intervención.
+            </p>
           </div>
-          <p class="proceso__title">Tercera etapa</p>
-          <h3 class="proceso__heading">Rediseño<br>estético</h3>
-          <p class="proceso__text">
-            Acabados vibrantes y contemporáneos que respetan la identidad original
-            de la pieza. El contraste entre la antigüedad del mueble y la modernidad de la intervención.
-          </p>
         </div>
 
       </div>
@@ -336,118 +415,9 @@
 
 
   <!-- ================================
-       CURSOS
-       ================================ -->
-  <section class="section section--cream grain-light" id="cursos">
-    <div style="max-width:1400px;margin:0 auto;">
-
-      <div class="cursos__header">
-        <div>
-          <p class="section__label reveal">Formación</p>
-          <h2 class="section__heading reveal reveal-delay-1">
-            Cursos<br><em style="font-family:var(--font-serif);font-style:italic;font-weight:600;color:var(--terracotta);text-transform:none;">& talleres</em>
-          </h2>
-        </div>
-        <a href="#contacto" class="btn-ghost reveal reveal-delay-2" style="color:var(--dark);border-color:rgba(26,53,48,0.3);">
-          Ver todos los cursos →
-        </a>
-      </div>
-
-      <div class="cursos__grid">
-
-        <!-- Curso 1 -->
-        <div class="curso-card reveal">
-          <div class="curso-card__img">
-            <img src="assets/images/Restauración básica de muebles.png" alt="Restauración básica de muebles" style="width:100%;height:100%;object-fit:cover;">
-            <span class="curso-card__tag">Presencial · Buenos Aires</span>
-          </div>
-          <div class="curso-card__body">
-            <p class="curso-card__level">Nivel inicial</p>
-            <h3 class="curso-card__title">Restauración básica de muebles</h3>
-            <p class="curso-card__desc">Fundamentos del diagnóstico, lijado, ensambles y primeros acabados. Ideal para comenzar.</p>
-            <div class="curso-card__footer">
-              <div class="curso-card__price">$45.000 <span>/ 4 clases</span></div>
-              <div class="curso-card__arrow">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M1 7h12M8 2l5 5-5 5"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Curso 2 -->
-        <div class="curso-card reveal reveal-delay-1">
-          <div class="curso-card__img">
-            <img src="assets/images/Tapicería contemporánea.png" alt="Tapicería contemporánea" style="width:100%;height:100%;object-fit:cover;">
-            <span class="curso-card__tag">Presencial · Buenos Aires</span>
-          </div>
-          <div class="curso-card__body">
-            <p class="curso-card__level">Nivel intermedio</p>
-            <h3 class="curso-card__title">Tapicería contemporánea</h3>
-            <p class="curso-card__desc">Técnicas modernas de tapizado, elección de telas y terminaciones de alto impacto visual.</p>
-            <div class="curso-card__footer">
-              <div class="curso-card__price">$68.000 <span>/ 6 clases</span></div>
-              <div class="curso-card__arrow">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M1 7h12M8 2l5 5-5 5"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Curso 3 -->
-        <div class="curso-card reveal reveal-delay-2">
-          <div class="curso-card__img">
-            <img src="assets/images/Acabados & protección.png" alt="Acabados & protección" style="width:100%;height:100%;object-fit:cover;">
-            <span class="curso-card__tag">Presencial · Buenos Aires</span>
-          </div>
-          <div class="curso-card__body">
-            <p class="curso-card__level">Nivel intermedio</p>
-            <h3 class="curso-card__title">Acabados & protección</h3>
-            <p class="curso-card__desc">Lacas, patinas, decapados y barnices. Cómo lograr los colores y texturas que buscás.</p>
-            <div class="curso-card__footer">
-              <div class="curso-card__price">$52.000 <span>/ 4 clases</span></div>
-              <div class="curso-card__arrow">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M1 7h12M8 2l5 5-5 5"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Curso 4 -->
-        <div class="curso-card reveal reveal-delay-3">
-          <div class="curso-card__img">
-            <img src="assets/images/Diseño & rediseño de piezas.png" alt="Diseño & rediseño de piezas" style="width:100%;height:100%;object-fit:cover;">
-            <span class="curso-card__tag">Intensivo · 1 día</span>
-          </div>
-          <div class="curso-card__body">
-            <p class="curso-card__level">Nivel avanzado</p>
-            <h3 class="curso-card__title">Diseño & rediseño de piezas</h3>
-            <p class="curso-card__desc">Cómo intervenir un mueble antiguo con una visión contemporánea. Concepto, color y forma.</p>
-            <div class="curso-card__footer">
-              <div class="curso-card__price">$85.000 <span>/ intensivo</span></div>
-              <div class="curso-card__arrow">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M1 7h12M8 2l5 5-5 5"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ================================
        COLECCIÓN CÁPSULA
        ================================ -->
-  <section class="section section--dark grain-dark capsula" id="capsula">
+  <section class="section section--plum grain-dark capsula" id="capsula">
     <div class="capsula__inner">
 
       <div class="capsula__text">
