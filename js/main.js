@@ -251,6 +251,115 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* ---- CURSOR: efecto pulido / lijado (solo desktop, toda la web) ---- */
+  (() => {
+    // Desactivar en touch/mobile (sin mouse real)
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    // ─── CONFIG — editá estos valores para ajustar el efecto ───────────────
+    const LERP       = 0.13;            // suavidad del ring (0=más lag, 1=instantáneo)
+    const P_COUNT    = 4;               // partículas por evento
+    const P_LIFE     = 420;             // ms que vive cada partícula
+    const P_SPREAD   = 22;              // px — radio de dispersión al nacer
+    const P_COLOR    = [212, 188, 158]; // RGB color del polvo de madera
+    const P_THROTTLE = 30;              // ms mínimo entre tandas de partículas
+    // ───────────────────────────────────────────────────────────────────────
+
+    // Crear elementos
+    const ring = document.createElement('div');
+    ring.className = 'cursor-ring';
+    document.body.appendChild(ring);
+
+    const cvs = document.createElement('canvas');
+    cvs.className = 'cursor-canvas';
+    document.body.appendChild(cvs);
+    const pCtx = cvs.getContext('2d');
+
+    const resizeCvs = () => { cvs.width = window.innerWidth; cvs.height = window.innerHeight; };
+    resizeCvs();
+    window.addEventListener('resize', resizeCvs, { passive: true });
+
+    // Estado
+    let mx = -300, my = -300, rx = -300, ry = -300;
+    let rafRunning = false;
+    let lastSpawn = 0;
+    const grains = [];
+
+    // Partícula individual (viruta / polvo de madera)
+    class Grain {
+      constructor(x, y) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist  = Math.random() * P_SPREAD;
+        this.x  = x + Math.cos(angle) * dist * 0.3;
+        this.y  = y + Math.sin(angle) * dist * 0.3;
+        this.vx = Math.cos(angle) * (0.12 + Math.random() * 0.28);
+        this.vy = Math.sin(angle) * (0.12 + Math.random() * 0.28);
+        this.alpha = 0.3 + Math.random() * 0.28;
+        this.r    = 0.5 + Math.random() * 1.1;
+        this.born = performance.now();
+      }
+      draw(now) {
+        const t = (now - this.born) / P_LIFE;
+        if (t >= 1) return false;
+        this.x += this.vx;
+        this.y += this.vy;
+        pCtx.globalAlpha = this.alpha * (1 - t * t * t);
+        pCtx.fillStyle = `rgb(${P_COLOR.join(',')})`;
+        pCtx.beginPath();
+        pCtx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        pCtx.fill();
+        return true;
+      }
+    }
+
+    // RAF loop — siempre activo mientras haya mouse o partículas
+    const loop = () => {
+      rx += (mx - rx) * LERP;
+      ry += (my - ry) * LERP;
+      ring.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;
+
+      pCtx.clearRect(0, 0, cvs.width, cvs.height);
+      const now = performance.now();
+      for (let i = grains.length - 1; i >= 0; i--) {
+        if (!grains[i].draw(now)) grains.splice(i, 1);
+      }
+      pCtx.globalAlpha = 1;
+      requestAnimationFrame(loop);
+    };
+
+    // Spawn partículas (throttleado)
+    const spawn = (x, y) => {
+      const now = performance.now();
+      if (now - lastSpawn < P_THROTTLE) return;
+      lastSpawn = now;
+      for (let i = 0; i < P_COUNT; i++) grains.push(new Grain(x, y));
+    };
+
+    // Activar con el primer movimiento del mouse
+    document.addEventListener('mousemove', (e) => {
+      mx = e.clientX; my = e.clientY;
+
+      if (!rafRunning) {
+        rafRunning = true;
+        ring.classList.add('active');
+        document.documentElement.classList.add('raiz-cursor-active');
+        loop();
+      }
+
+      spawn(mx, my);
+    }, { passive: true });
+
+    // Ocultar ring cuando el mouse sale de la ventana
+    document.addEventListener('mouseleave', () => ring.classList.remove('active'));
+    document.addEventListener('mouseenter', () => ring.classList.add('active'));
+
+    // Agrandar ring sobre elementos interactivos
+    document.querySelectorAll('a, button, .curso-card, .valores__slide').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+    });
+  })();
+
   /* ---- PROCESO expanding tabs ---- */
   const procesoTabs = document.querySelectorAll('.proceso__tab');
 

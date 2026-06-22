@@ -1567,6 +1567,69 @@ a {
   margin-top: 6px;
 }
 
+
+/* =============================================
+   CURSOR — efecto pulido / lijado
+   Solo activo en desktop con mouse (#cursos)
+   ============================================= */
+
+/* Ocultar cursor nativo dentro de la sección cuando el efecto está activo.
+   Para aplicarlo a TODA la web: cambiar html.raiz-cursor-active a html.raiz-cursor-active * */
+html.raiz-cursor-active,
+html.raiz-cursor-active * {
+  cursor: none !important;
+}
+
+/* Anillo principal que sigue al mouse */
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+
+  /* ▼ TAMAÑO EN REPOSO — editar width/height */
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+
+  /* ▼ COLOR DEL ANILLO — rgba(R,G,B, opacidad) */
+  border: 1.5px solid rgba(210, 180, 140, 0.55);
+
+  /* ▼ RELLENO INTERIOR — muy sutil, como revelación de material */
+  background: radial-gradient(circle, rgba(210,180,140,0.05) 0%, transparent 68%);
+
+  opacity: 0;
+  /* ▼ VELOCIDAD DE TRANSICIÓN DE TAMAÑO/COLOR */
+  transition: width 0.35s ease, height 0.35s ease,
+              opacity 0.2s ease, border-color 0.35s ease,
+              background 0.35s ease;
+  will-change: transform;
+}
+
+/* Visible dentro de la sección */
+.cursor-ring.active {
+  opacity: 1;
+}
+
+/* ▼ ESTADO HOVER — al pasar sobre cards y botones */
+.cursor-ring.hovered {
+  width: 52px;   /* ▼ TAMAÑO EN HOVER */
+  height: 52px;
+  border-color: rgba(210, 180, 140, 0.88);
+  background: radial-gradient(circle, rgba(210,180,140,0.09) 0%, transparent 68%);
+}
+
+/* Canvas de partículas — overlay fijo, no intercepta clics */
+.cursor-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .footer__nav {
   display: flex;
   gap: 64px;
