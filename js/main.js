@@ -251,6 +251,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* ---- ERGONOMÍA: parallax blueprint ---- */
+  const ergoStage = document.querySelector('#ergoStage');
+  if (ergoStage && !window.matchMedia('(hover: none)').matches) {
+    const ergoLayers = ergoStage.querySelectorAll('.ergo__layer[data-depth]');
+    let ergoMx = 0, ergoMy = 0, ergoRaf = null;
+
+    const ergoUpdate = () => {
+      ergoLayers.forEach(layer => {
+        const d = parseFloat(layer.dataset.depth) || 0;
+        layer.style.transform = `translate3d(${ergoMx * d * 26}px, ${ergoMy * d * 16}px, 0)`;
+      });
+      ergoRaf = null;
+    };
+
+    ergoStage.addEventListener('mousemove', (e) => {
+      const r = ergoStage.getBoundingClientRect();
+      ergoMx = ((e.clientX - r.left)  / r.width  - 0.5) * 2;
+      ergoMy = ((e.clientY - r.top)   / r.height - 0.5) * 2;
+      if (!ergoRaf) ergoRaf = requestAnimationFrame(ergoUpdate);
+    }, { passive: true });
+
+    ergoStage.addEventListener('mouseleave', () => {
+      ergoMx = 0; ergoMy = 0;
+      ergoLayers.forEach(l => {
+        l.style.transition = 'transform 0.9s var(--ease-out)';
+        l.style.transform  = 'translate3d(0,0,0)';
+      });
+      setTimeout(() => ergoLayers.forEach(l => l.style.transition = ''), 900);
+    });
+  }
+
   /* ---- CURSOR: efecto pulido / lijado (solo desktop, toda la web) ---- */
   (() => {
     // Desactivar en touch/mobile (sin mouse real)
@@ -359,6 +390,43 @@ document.addEventListener('DOMContentLoaded', () => {
       el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
     });
   })();
+
+  /* ---- PILARES VIDEO: crossfade loop ---- */
+  const vidA = document.querySelector('.pilares__video--a');
+  const vidB = document.querySelector('.pilares__video--b');
+
+  if (vidA && vidB) {
+    const XFADE = 2.5; // segundos de solapamiento
+    let active   = vidA;
+    let standby  = vidB;
+    let crossing = false;
+
+    const startCrossfade = () => {
+      if (crossing) return;
+      crossing = true;
+
+      standby.currentTime = 0;
+      standby.play().catch(() => {});
+      standby.style.opacity = '1';
+      active.style.opacity  = '0';
+
+      setTimeout(() => {
+        active.pause();
+        active.style.transition = 'none';
+        active.style.opacity = '0';
+        requestAnimationFrame(() => { active.style.transition = ''; });
+        [active, standby] = [standby, active];
+        crossing = false;
+      }, (XFADE + 0.3) * 1000);
+    };
+
+    [vidA, vidB].forEach(vid => {
+      vid.addEventListener('timeupdate', () => {
+        if (vid !== active || crossing || !vid.duration) return;
+        if (vid.duration - vid.currentTime < XFADE) startCrossfade();
+      });
+    });
+  }
 
   /* ---- PROCESO expanding tabs ---- */
   const procesoTabs = document.querySelectorAll('.proceso__tab');
