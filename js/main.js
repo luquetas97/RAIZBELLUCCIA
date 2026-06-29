@@ -12,9 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---- NAV: scroll effect ---- */
   const nav = document.querySelector('.nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-  }, { passive: true });
 
   /* ---- NAV: hamburger mobile ---- */
   const hamburger = document.querySelector('.nav__hamburger');
@@ -391,6 +388,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
+  /* ---- TYPEWRITER: cita nosotros ---- */
+  const twEl = document.querySelector('.typewriter-text');
+  if (twEl) {
+    const TEXT       = '"Restaurar no es volver atrás, es darle una nueva oportunidad al origen."';
+    const TYPE_SPD   = 42;
+    const ERASE_SPD  = 18;
+    const PAUSE_END  = 5000;
+    const PAUSE_START = 400;
+    let i = 0, typing = true;
+
+    const tick = () => {
+      if (typing) {
+        twEl.textContent = TEXT.slice(0, i + 1);
+        i++;
+        if (i >= TEXT.length) { typing = false; setTimeout(tick, PAUSE_END); return; }
+        setTimeout(tick, TYPE_SPD);
+      } else {
+        twEl.textContent = TEXT.slice(0, i - 1);
+        i--;
+        if (i <= 0) { typing = true; setTimeout(tick, PAUSE_START); return; }
+        setTimeout(tick, ERASE_SPD);
+      }
+    };
+    setTimeout(tick, 900);
+  }
+
   /* ---- PILARES VIDEO: crossfade loop ---- */
   const vidA = document.querySelector('.pilares__video--a');
   const vidB = document.querySelector('.pilares__video--b');
@@ -456,6 +479,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     procesoGoTo(0);
     procesoStartAuto();
+  }
+
+  /* ---- PAGE TRANSITION — salida hacia páginas de curso ---- */
+  const pt = document.querySelector('.page-transition');
+  if (pt) {
+    document.querySelectorAll('a[href^="curso-"]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const dest = link.href;
+        pt.classList.add('pt-entering');
+        setTimeout(() => { window.location.href = dest; }, 750);
+      });
+    });
   }
 
 });

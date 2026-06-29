@@ -4,7 +4,12 @@
       "Bash(claude mcp *)",
       "mcp__magic__21st_magic_component_inspiration",
       "Bash(ffmpeg -version)",
-      "mcp__Claude_Preview__preview_start"
+      "mcp__Claude_Preview__preview_start",
+      "mcp__visualize__read_me",
+      "mcp__visualize__show_widget",
+      "Bash(python3 -c \"from PIL import Image; img = Image.open\\('assets/frames/frame_001.jpg'\\); print\\(img.size\\)\")",
+      "Bash(python -c \"from PIL import Image; img = Image.open\\('assets/frames/frame_001.jpg'\\); print\\(img.size\\)\")",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\(\"C:\\\\Users\\\\Lucas\\\\Desktop\\\\nueva web\\\\assets\\\\frames\\\\frame-0000.jpg\"\\); Write-Host \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))"
     ]
   }
 }
