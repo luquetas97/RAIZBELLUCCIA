@@ -217,11 +217,12 @@
             <h3 class="curso-card__title">Restauración básica de muebles</h3>
             <div class="curso-card__footer">
               <span class="curso-card__price">$45.000 <span>/ 4 clases</span></span>
-              <div class="curso-card__arrow">
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+              <a href="#cursos" class="curso-card__btn">
+                Ver programa
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M1 7h12M8 2l5 5-5 5"/>
                 </svg>
-              </div>
+              </a>
             </div>
           </div>
         </div>
@@ -237,11 +238,12 @@
             <h3 class="curso-card__title">Tapicería contemporánea</h3>
             <div class="curso-card__footer">
               <span class="curso-card__price">$68.000 <span>/ 6 clases</span></span>
-              <div class="curso-card__arrow">
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+              <a href="#cursos" class="curso-card__btn">
+                Ver programa
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M1 7h12M8 2l5 5-5 5"/>
                 </svg>
-              </div>
+              </a>
             </div>
           </div>
         </div>
@@ -257,8 +259,9 @@
             <h3 class="curso-card__title">Acabados & protección</h3>
             <div class="curso-card__footer">
               <span class="curso-card__price">$52.000 <span>/ 4 clases</span></span>
-              <a href="curso-acabados.html" class="curso-card__arrow" aria-label="Ver curso Acabados & protección">
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+              <a href="curso-acabados.html" class="curso-card__btn">
+                Ver programa
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M1 7h12M8 2l5 5-5 5"/>
                 </svg>
               </a>
@@ -451,73 +454,104 @@
 
 
   <!-- ================================
+       MAGNIFIER — Anatomía del mueble
+       ================================ -->
+  <section class="magnifier" id="anatomia">
+
+    <!-- Panel izquierdo con texto -->
+    <div class="magnifier__panel">
+      <span class="magnifier__label">Diseño estructural</span>
+      <h2 class="magnifier__title">Lo que no<br>se ve<br>sostiene todo.</h2>
+      <p class="magnifier__desc">Cada mueble RAIZ está construido sobre una arquitectura interior precisa. Pasá el cursor sobre la imagen para revelar el esqueleto que da forma al objeto.</p>
+      <div class="magnifier__hint">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M2 8h12M9 3l5 5-5 5"/>
+        </svg>
+        Deslizá para revelar la estructura
+      </div>
+    </div>
+
+    <!-- Stage: imagen base + imagen esqueleto + anillo -->
+    <div class="magnifier__stage" id="magnifierStage">
+      <img src="assets/images/mueble listo.png" alt="Mueble terminado RAIZ" class="magnifier__base">
+      <img src="assets/images/mueble ergonomico.png" alt="Estructura del mueble" class="magnifier__reveal" id="magnifierReveal">
+      <div class="magnifier__ring" id="magnifierRing"></div>
+    </div>
+
+  </section>
+
+
+  <!-- ================================
        RESTAURACIÓN INTEGRAL
        ================================ -->
   <section class="section section--cream" id="restauracion">
     <div style="max-width:1400px;margin:0 auto;">
 
-      <p class="section__label reveal">Nuestro servicio estrella</p>
+      <p class="section__label reveal">Materiales</p>
       <h2 class="section__heading reveal reveal-delay-1">
-        Restauración <em>integral</em>
+        Las maderas<br>con las que <em>trabajamos</em>
       </h2>
-      <p class="reveal reveal-delay-2" style="font-family:var(--font-body);font-size:16px;font-weight:300;color:rgba(26,53,48,0.7);margin-top:20px;max-width:500px;line-height:1.7;">
-        Un proceso de tres etapas que devuelve vida a cada pieza,
-        respetando su historia mientras la proyecta hacia el presente.
+      <p class="reveal reveal-delay-2" style="font-family:var(--font-body);font-size:16px;font-weight:300;color:rgba(26,53,48,0.7);margin-top:20px;max-width:520px;line-height:1.7;">
+        Cada especie tiene su carácter, su densidad y su historia. Conocer la madera es el primer paso de cualquier restauración.
       </p>
 
-      <div class="proceso__tabs reveal reveal-delay-2">
+      <div class="madera__tabs reveal reveal-delay-2">
 
-        <div class="proceso__tab active">
-          <span class="proceso__tab-num">01</span>
-          <span class="proceso__tab-label">Diagnóstico</span>
-          <div class="proceso__tab-body">
-            <p class="proceso__title">Primera etapa</p>
-            <h3 class="proceso__heading">Diagnóstico<br>profesional</h3>
-            <p class="proceso__text">
-              Evaluamos el estado estructural de cada pieza: ensambles, maderas,
-              recubrimientos y daños. Un informe detallado antes de comenzar cualquier intervención.
-            </p>
+        <div class="madera__tab madera__tab--photo active" style="background-image:url('assets/images/roble americano.png')">
+          <div class="madera__tab-shade"></div>
+          <span class="madera__tab-num">01</span>
+          <span class="madera__tab-label">Roble Am.</span>
+          <div class="madera__tab-body">
+            <p class="madera__tab-title">Grano recto y fuerte</p>
+            <h3 class="madera__tab-heading">Roble<br>americano</h3>
+            <p class="madera__tab-text">Madera de grano recto y poro abierto, en tonos que van del miel al castaño claro. Muy estable dimensionalmente y de gran resistencia mecánica. Base de gran parte del mobiliario clásico y la ebanistería de exportación.</p>
           </div>
         </div>
 
-        <div class="proceso__tab">
-          <span class="proceso__tab-num">02</span>
-          <span class="proceso__tab-label">Reparación</span>
-          <div class="proceso__tab-body">
-            <p class="proceso__title">Segunda etapa</p>
-            <h3 class="proceso__heading">Reparación<br>estructural</h3>
-            <p class="proceso__text">
-              Intervenimos ensambles, reforzamos la estructura y tratamos la madera
-              con los métodos y materiales más adecuados para cada tipo de pieza.
-            </p>
+        <div class="madera__tab madera__tab--photo" style="background-image:url('assets/images/roble europeo.png')">
+          <div class="madera__tab-shade"></div>
+          <span class="madera__tab-num">02</span>
+          <span class="madera__tab-label">Roble Eu.</span>
+          <div class="madera__tab-body">
+            <p class="madera__tab-title">Clásico estructural</p>
+            <h3 class="madera__tab-heading">Roble<br>europeo</h3>
+            <p class="madera__tab-text">La referencia de la ebanistería tradicional. Resistente, de poro abierto y tono dorado, acepta acabados que van del mate al brillante sin perder carácter. Base de los mejores muebles del siglo XIX y XX.</p>
           </div>
         </div>
 
-        <div class="proceso__tab">
-          <span class="proceso__tab-num">03</span>
-          <span class="proceso__tab-label">Rediseño</span>
-          <div class="proceso__tab-body">
-            <p class="proceso__title">Tercera etapa</p>
-            <h3 class="proceso__heading">Rediseño<br>estético</h3>
-            <p class="proceso__text">
-              Acabados vibrantes y contemporáneos que respetan la identidad original
-              de la pieza. El contraste entre la antigüedad del mueble y la modernidad de la intervención.
-            </p>
+        <div class="madera__tab madera__tab--photo" style="background-image:url('assets/images/cedro argentino.png')">
+          <div class="madera__tab-shade"></div>
+          <span class="madera__tab-num">03</span>
+          <span class="madera__tab-label">Cedro</span>
+          <div class="madera__tab-body">
+            <p class="madera__tab-title">Aromático nativo</p>
+            <h3 class="madera__tab-heading">Cedro<br>argentino</h3>
+            <p class="madera__tab-text">Liviana y aromática, con veta fina y tonos que van del rosado al rojo ladrillo. Muy presente en muebles antiguos locales. Fácil de trabajar y con excelente respuesta a aceites y ceras naturales.</p>
           </div>
         </div>
 
-      </div>
+        <div class="madera__tab madera__tab--photo" style="background-image:url('assets/images/lapacho.png')">
+          <div class="madera__tab-shade"></div>
+          <span class="madera__tab-num">04</span>
+          <span class="madera__tab-label">Lapacho</span>
+          <div class="madera__tab-body">
+            <p class="madera__tab-title">Dureza extrema</p>
+            <h3 class="madera__tab-heading">Lapacho</h3>
+            <p class="madera__tab-text">Una de las maderas más duras de Sudamérica. Veta irregular y tonos que van del castaño al amarillo oscuro. Presente en estructuras que requieren resistencia extrema al desgaste y al tiempo.</p>
+          </div>
+        </div>
 
-      <div class="proceso__cta reveal">
-        <a href="#contacto" class="btn-primary">
-          Consultá tu pieza
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M1 7h12M8 2l5 5-5 5"/>
-          </svg>
-        </a>
-        <span style="font-family:var(--font-body);font-size:13px;color:rgba(242,237,228,0.35);font-style:italic;">
-          Respuesta en menos de 48hs
-        </span>
+        <div class="madera__tab madera__tab--photo" style="background-image:url('assets/images/pino oregon.png')">
+          <div class="madera__tab-shade"></div>
+          <span class="madera__tab-num">05</span>
+          <span class="madera__tab-label">Pino</span>
+          <div class="madera__tab-body">
+            <p class="madera__tab-title">Versátil y noble</p>
+            <h3 class="madera__tab-heading">Pino<br>oregón</h3>
+            <p class="madera__tab-text">Veta recta y tonos cálidos ámbar. Liviano pero resistente, es la base ideal para restauraciones donde el peso importa. Acepta todo tipo de tintes y barnices con resultado uniforme y elegante.</p>
+          </div>
+        </div>
+
       </div>
 
     </div>

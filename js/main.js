@@ -481,6 +481,76 @@ document.addEventListener('DOMContentLoaded', () => {
     procesoStartAuto();
   }
 
+  /* ---- TIPOS DE MADERA — expanding tabs ---- */
+  const maderaTabs = document.querySelectorAll('.madera__tab');
+
+  if (maderaTabs.length) {
+    let maderaIdx = 0;
+
+    const maderaGoTo = (idx) => {
+      maderaIdx = ((idx % maderaTabs.length) + maderaTabs.length) % maderaTabs.length;
+      maderaTabs.forEach((t, i) => t.classList.toggle('active', i === maderaIdx));
+    };
+
+    let maderaTimer = setInterval(() => maderaGoTo(maderaIdx + 1), 4000);
+
+    maderaTabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        if (i !== maderaIdx) {
+          maderaGoTo(i);
+          clearInterval(maderaTimer);
+          maderaTimer = setInterval(() => maderaGoTo(maderaIdx + 1), 4000);
+        }
+      });
+    });
+
+    const maderaSection = document.querySelector('.madera__tabs');
+    maderaSection?.addEventListener('mouseenter', () => clearInterval(maderaTimer));
+    maderaSection?.addEventListener('mouseleave', () => {
+      clearInterval(maderaTimer);
+      maderaTimer = setInterval(() => maderaGoTo(maderaIdx + 1), 4000);
+    });
+
+    maderaGoTo(0);
+  }
+
+  /* ---- MAGNIFIER — lupa sobre anatomía del mueble ---- */
+  const magnifierStage = document.getElementById('magnifierStage');
+  const magnifierReveal = document.getElementById('magnifierReveal');
+  const magnifierRing = document.getElementById('magnifierRing');
+
+  if (magnifierStage && magnifierReveal && magnifierRing) {
+    const R = 170; // radio de la lupa en px
+
+    let rafId = null;
+    let mouseX = 0, mouseY = 0;
+
+    magnifierStage.addEventListener('mouseenter', () => {
+      magnifierRing.style.opacity = '1';
+    });
+
+    magnifierStage.addEventListener('mouseleave', () => {
+      magnifierRing.style.opacity = '0';
+      magnifierReveal.style.clipPath = 'circle(0px at -9999px -9999px)';
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    });
+
+    magnifierStage.addEventListener('mousemove', (e) => {
+      const rect = magnifierStage.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(() => {
+          magnifierReveal.style.clipPath = `circle(${R}px at ${mouseX}px ${mouseY}px)`;
+          magnifierRing.style.left = mouseX + 'px';
+          magnifierRing.style.top  = mouseY + 'px';
+          rafId = null;
+        });
+      }
+    });
+  }
+
   /* ---- PAGE TRANSITION — salida hacia páginas de curso ---- */
   const pt = document.querySelector('.page-transition');
   if (pt) {

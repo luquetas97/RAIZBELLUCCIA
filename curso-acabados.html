@@ -18,20 +18,17 @@
     .cd-hero {
       background: var(--terracotta);
       padding-top: var(--nav-h);
-      position: relative;
-      overflow: hidden;
+      display: grid;
+      grid-template-columns: 48% 52%;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
+      overflow: hidden;
     }
 
     .cd-hero__content {
-      position: relative;
-      z-index: 2;
       padding: 72px 56px 72px 80px;
-      max-width: 580px;
       display: flex;
       flex-direction: column;
+      justify-content: center;
     }
 
     .cd-hero__breadcrumb {
@@ -138,9 +135,8 @@
     .cd-hero__wa:hover { color: rgba(255,255,255,1); }
 
     .cd-hero__visual {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
+      position: relative;
+      overflow: hidden;
     }
 
     .cd-hero__img {
@@ -149,17 +145,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center right;
+      object-position: center;
     }
 
     .cd-hero__img-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background: linear-gradient(to right,
-        var(--terracotta) 0%,
-        var(--terracotta) 38%,
-        transparent 56%);
+      display: none;
     }
 
     /* -- PROGRAMA -- */

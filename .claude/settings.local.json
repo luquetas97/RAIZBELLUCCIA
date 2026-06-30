@@ -9,7 +9,12 @@
       "mcp__visualize__show_widget",
       "Bash(python3 -c \"from PIL import Image; img = Image.open\\('assets/frames/frame_001.jpg'\\); print\\(img.size\\)\")",
       "Bash(python -c \"from PIL import Image; img = Image.open\\('assets/frames/frame_001.jpg'\\); print\\(img.size\\)\")",
-      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\(\"C:\\\\Users\\\\Lucas\\\\Desktop\\\\nueva web\\\\assets\\\\frames\\\\frame-0000.jpg\"\\); Write-Host \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))"
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\(\"C:\\\\Users\\\\Lucas\\\\Desktop\\\\nueva web\\\\assets\\\\frames\\\\frame-0000.jpg\"\\); Write-Host \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/curso-acabados.html)",
+      "PowerShell(cd \"C:\\\\Users\\\\Lucas\\\\Desktop\\\\nueva web\"; Start-Process cmd.exe -ArgumentList \"/c npx serve -l 3001 .\" -WindowStyle Hidden; Start-Sleep -Seconds 5; \\(Invoke-WebRequest -Uri \"http://localhost:3001/curso-acabados.html\" -UseBasicParsing -ErrorAction SilentlyContinue\\).StatusCode)",
+      "PowerShell(Get-Command python -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command py -ErrorAction SilentlyContinue)",
+      "PowerShell(cd \"C:\\\\Users\\\\Lucas\\\\Desktop\\\\nueva web\"; Start-Process python -ArgumentList \"-m\",\"http.server\",\"3002\" -WindowStyle Hidden; Start-Sleep -Seconds 3; \\(Invoke-WebRequest -Uri \"http://localhost:3002/index.html\" -UseBasicParsing\\).StatusCode)"
     ]
   }
 }
