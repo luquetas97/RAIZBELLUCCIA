@@ -98,27 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const AUTO_DELAY    = 5000;
   let currentSlide    = 0;
 
-  // Barra de progreso — reusar si ya existe (F5 reload con DOM cacheado)
-  let progressBar = document.querySelector('.valores__progress');
-  if (!progressBar) {
-    progressBar = document.createElement('div');
-    progressBar.className = 'valores__progress';
-    document.querySelector('.valores')?.appendChild(progressBar);
-  }
-
   const goTo = (index) => {
     currentSlide = (index + SLIDE_COUNT) % SLIDE_COUNT;
     valoresSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
     valoresDots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
-
-    progressBar.style.transition = 'none';
-    progressBar.style.width = '0%';
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        progressBar.style.transition = `width ${AUTO_DELAY}ms linear`;
-        progressBar.style.width = '100%';
-      });
-    });
   };
 
   const startAuto = () => {
@@ -126,10 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
     globalAutoTimer = setInterval(() => goTo(currentSlide + 1), AUTO_DELAY);
   };
 
-  prevBtn?.addEventListener('click', () => { goTo(currentSlide - 1); startAuto(); });
-  nextBtn?.addEventListener('click', () => { goTo(currentSlide + 1); startAuto(); });
+  prevBtn?.addEventListener('click', () => goTo(currentSlide - 1));
+  nextBtn?.addEventListener('click', () => goTo(currentSlide + 1));
   valoresDots.forEach((dot, i) => {
-    dot.addEventListener('click', () => { goTo(i); startAuto(); });
+    dot.addEventListener('click', () => goTo(i));
   });
 
   let touchStartX = 0;
@@ -138,14 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
   document.querySelector('.valores')?.addEventListener('touchend', e => {
     const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) { goTo(currentSlide + (diff > 0 ? 1 : -1)); startAuto(); }
+    if (Math.abs(diff) > 50) goTo(currentSlide + (diff > 0 ? 1 : -1));
   });
 
-  document.querySelector('.valores')?.addEventListener('mouseenter', () => clearInterval(globalAutoTimer));
-  document.querySelector('.valores')?.addEventListener('mouseleave', () => startAuto());
-
   goTo(0);
-  startAuto();
 
   /* ---- COUNTER ANIMATION ---- */
   const statNumbers = document.querySelectorAll('[data-count]');
@@ -188,8 +167,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroVideo) heroVideo.replaceWith(canvas);
     else document.querySelector('.hero').prepend(canvas);
     const ctx = canvas.getContext('2d');
+    const heroEl = document.querySelector('.hero');
 
     let lastFrame = -1;
+
+    const resizeCanvas = () => {
+      canvas.width  = heroEl.offsetWidth;
+      canvas.height = heroEl.offsetHeight;
+      if (lastFrame >= 0 && frames[lastFrame]) drawFrameCover(lastFrame);
+    };
+
+    const drawFrameCover = (i) => {
+      const img = frames[i];
+      if (!img || !img.complete) return;
+      const cw = canvas.width, ch = canvas.height;
+      const iw = img.naturalWidth, ih = img.naturalHeight;
+      const scale = Math.min(cw / iw, ch / ih);
+      const sw = iw * scale, sh = ih * scale;
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(img, cw - sw, (ch - sh) / 2, sw, sh);
+    };
 
     const loadFrameImg = (i) => new Promise((resolve) => {
       const img = new Image();
@@ -208,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const i = Math.max(0, Math.min(TOTAL_FRAMES - 1, index));
       if (i === lastFrame) return;
       lastFrame = i;
-      if (frames[i] && frames[i].complete) ctx.drawImage(frames[i], 0, 0);
+      drawFrameCover(i);
     };
 
     const scrub = () => {
@@ -223,12 +220,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!globalScrollRafId) globalScrollRafId = requestAnimationFrame(scrub);
     }, { passive: true });
 
+    window.addEventListener('resize', resizeCanvas);
+
     // Frame 0 primero — inicia canvas en cuanto carga; resto en background
     loadFrameImg(0).then(img => {
       if (!img) return;
-      canvas.width  = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      ctx.drawImage(img, 0, 0);
+      resizeCanvas();
+      drawFrameCover(0);
       lastFrame = 0;
     });
     for (let i = 1; i < TOTAL_FRAMES; i++) loadFrameImg(i);
@@ -549,6 +547,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     });
+  }
+
+  /* ---- MAGNIFIER: botones revelar/ocultar (mobile) ---- */
+  const revealBtn = document.getElementById('magnifierRevealBtn');
+  const hideBtn   = document.getElementById('magnifierHideBtn');
+  if (revealBtn && magnifierStage) {
+    revealBtn.addEventListener('click', () => magnifierStage.classList.add('revealed'));
+  }
+  if (hideBtn && magnifierStage) {
+    hideBtn.addEventListener('click', () => magnifierStage.classList.remove('revealed'));
   }
 
   /* ---- PAGE TRANSITION — salida hacia páginas de curso ---- */

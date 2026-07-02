@@ -14,7 +14,8 @@
       "PowerShell(cd \"C:\\\\Users\\\\Lucas\\\\Desktop\\\\nueva web\"; Start-Process cmd.exe -ArgumentList \"/c npx serve -l 3001 .\" -WindowStyle Hidden; Start-Sleep -Seconds 5; \\(Invoke-WebRequest -Uri \"http://localhost:3001/curso-acabados.html\" -UseBasicParsing -ErrorAction SilentlyContinue\\).StatusCode)",
       "PowerShell(Get-Command python -ErrorAction SilentlyContinue)",
       "PowerShell(Get-Command py -ErrorAction SilentlyContinue)",
-      "PowerShell(cd \"C:\\\\Users\\\\Lucas\\\\Desktop\\\\nueva web\"; Start-Process python -ArgumentList \"-m\",\"http.server\",\"3002\" -WindowStyle Hidden; Start-Sleep -Seconds 3; \\(Invoke-WebRequest -Uri \"http://localhost:3002/index.html\" -UseBasicParsing\\).StatusCode)"
+      "PowerShell(cd \"C:\\\\Users\\\\Lucas\\\\Desktop\\\\nueva web\"; Start-Process python -ArgumentList \"-m\",\"http.server\",\"3002\" -WindowStyle Hidden; Start-Sleep -Seconds 3; \\(Invoke-WebRequest -Uri \"http://localhost:3002/index.html\" -UseBasicParsing\\).StatusCode)",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\(\"C:\\\\Users\\\\Lucas\\\\Desktop\\\\nueva web\\\\assets\\\\images\\\\Cursor.png\"\\); \"Width: $\\($img.Width\\), Height: $\\($img.Height\\)\"; $img.Dispose\\(\\))"
     ]
   }
 }
