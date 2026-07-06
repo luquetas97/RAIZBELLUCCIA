@@ -81,7 +81,6 @@
       gap: 40px;
       margin-bottom: 44px;
       padding-top: 32px;
-      border-top: 1px solid rgba(255,255,255,0.2);
     }
 
     .cd-hero__meta-item {
@@ -152,25 +151,35 @@
       display: none;
     }
 
+    /* -- GRAIN DARK Z-INDEX FIX (dark sections) -- */
+    .cd-cert, .cd-reviews, .cd-cta { isolation: isolate; }
+    .cd-cert.grain-dark::after,
+    .cd-reviews.grain-dark::after,
+    .cd-cta.grain-dark::after { z-index: -1; }
+    .cd-cert__inner, .cd-reviews__inner, .cd-cta__inner { position: relative; z-index: 1; }
+
     /* -- PROGRAMA -- */
     .cd-programa {
       background: var(--cream);
       padding: 104px 80px;
     }
 
-    .cd-programa__inner {
-      max-width: 1100px;
+    .cd-programa__wrap {
+      max-width: 860px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 80px;
-      align-items: start;
     }
 
-    .cd-programa__sticky {
-      position: sticky;
-      top: calc(var(--nav-h) + 32px);
+    .cd-programa__hd {
+      text-align: center;
+      margin-bottom: 72px;
     }
+
+    .cd-programa__hd .cd-sub {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .cd-heading--dark em { color: var(--teal); font-style: italic; }
 
     .cd-tag {
       font-size: 11px;
@@ -278,6 +287,132 @@
       margin-bottom: 4px;
     }
 
+    /* -- STEPS (cd-programa nuevo diseño) -- */
+    .cd-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .cd-step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 0 24px;
+      align-items: start;
+    }
+
+    .cd-step__num {
+      font-family: 'Syne', sans-serif;
+      font-style: italic;
+      font-size: 52px;
+      font-weight: 700;
+      color: rgba(26,53,48,0.1);
+      line-height: 1;
+      padding-top: 26px;
+      text-align: right;
+      transition: color 0.35s;
+    }
+
+    .cd-step.is-open .cd-step__num {
+      color: var(--teal);
+    }
+
+    .cd-step__card {
+      border-top: 1px solid rgba(26,53,48,0.12);
+    }
+
+    .cd-step:last-child .cd-step__card {
+      border-bottom: 1px solid rgba(26,53,48,0.12);
+    }
+
+    .cd-step__trigger {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 26px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      gap: 16px;
+    }
+
+    .cd-step__head {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cd-step__label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .cd-step__title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.25;
+    }
+
+    .cd-step__icon {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(26,53,48,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(26,53,48,0.35);
+      transition: border-color 0.25s, background 0.25s, color 0.25s, transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .cd-step.is-open .cd-step__icon {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+      transform: rotate(45deg);
+    }
+
+    .cd-step__body {
+      display: grid;
+      grid-template-rows: 0fr;
+      overflow: hidden;
+      transition: grid-template-rows 0.45s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .cd-step.is-open .cd-step__body {
+      grid-template-rows: 1fr;
+    }
+
+    .cd-step__body-inner {
+      min-height: 0;
+      padding: 0 40px 0 0;
+      font-size: 14px;
+      line-height: 1.85;
+      color: rgba(26,53,48,0.62);
+    }
+
+    .cd-step__body-inner p {
+      margin-bottom: 16px;
+    }
+
+    .cd-step__body-inner ul {
+      padding-left: 18px;
+      margin-top: 4px;
+      margin-bottom: 28px;
+    }
+
+    .cd-step__body-inner li {
+      margin-bottom: 6px;
+    }
+
     /* -- CERTIFICADO -- */
     .cd-cert {
       background: var(--plum);
@@ -355,15 +490,23 @@
       width: 100%;
       border-radius: 10px;
       display: block;
-      box-shadow: 0 24px 56px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.3);
       animation: cert-float 5s ease-in-out infinite;
       transform-origin: center bottom;
     }
 
     @keyframes cert-float {
-      0%   { transform: translateY(0px) rotate3d(1,0,0,2deg); }
-      50%  { transform: translateY(-10px) rotate3d(1,0,0,0deg); }
-      100% { transform: translateY(0px) rotate3d(1,0,0,2deg); }
+      0%   {
+        transform: translateY(0px);
+        box-shadow: 0 20px 48px rgba(0,0,0,0.65), 0 4px 12px rgba(0,0,0,0.35);
+      }
+      50%  {
+        transform: translateY(-20px);
+        box-shadow: 0 44px 80px rgba(0,0,0,0.38), 0 12px 28px rgba(0,0,0,0.18);
+      }
+      100% {
+        transform: translateY(0px);
+        box-shadow: 0 20px 48px rgba(0,0,0,0.65), 0 4px 12px rgba(0,0,0,0.35);
+      }
     }
 
     /* -- PARA QUIÉN -- */
@@ -684,16 +827,23 @@
         gap: 16px;
       }
 
-      /* Programa: single column */
+      /* Programa: mobile */
       .cd-programa {
         padding: 64px 24px;
       }
-      .cd-programa__inner {
-        grid-template-columns: 1fr;
-        gap: 48px;
+      .cd-programa__hd {
+        margin-bottom: 48px;
+        text-align: left;
       }
-      .cd-programa__sticky {
-        position: static;
+      .cd-step {
+        grid-template-columns: 52px 1fr;
+      }
+      .cd-step__num {
+        font-size: 38px;
+        padding-top: 28px;
+      }
+      .cd-step__title {
+        font-size: 16px;
       }
 
       /* Certificado: single column */
@@ -800,7 +950,7 @@
   <!-- ================================
        HERO
        ================================ -->
-  <section class="cd-hero">
+  <section class="cd-hero grain-dark">
 
     <div class="cd-hero__content">
       <div class="cd-hero__breadcrumb">
@@ -856,108 +1006,118 @@
   <!-- ================================
        PROGRAMA
        ================================ -->
-  <section class="cd-programa grain-light">
-    <div class="cd-programa__inner">
+  <section class="cd-programa">
+    <div class="cd-programa__wrap">
 
-      <div class="cd-programa__sticky">
+      <div class="cd-programa__hd">
         <p class="cd-tag">Contenido</p>
-        <h2 class="cd-heading cd-heading--dark">Programa<br>del curso</h2>
-        <p class="cd-sub cd-sub--dark" style="margin-top:16px;">
-          Cuatro encuentros intensivos en el taller. Cada clase combina teoría aplicada con práctica directa sobre madera real.
-        </p>
+        <h2 class="cd-heading cd-heading--dark">Programa del <em>curso</em></h2>
+        <p class="cd-sub cd-sub--dark">Cuatro encuentros intensivos en el taller. Cada clase combina teoría aplicada con práctica directa sobre madera real.</p>
       </div>
 
-      <ul class="cd-accordion">
+      <div class="cd-steps">
 
-        <li class="cd-accordion__item is-open">
-          <button class="cd-accordion__trigger" aria-expanded="true">
-            <div class="cd-accordion__trigger-left">
-              <span class="cd-accordion__num">01</span>
-              <span class="cd-accordion__title">Diagnóstico y preparación de superficie</span>
-            </div>
-            <svg class="cd-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 5v14M5 12h14"/>
-            </svg>
-          </button>
-          <div class="cd-accordion__body" style="max-height: 500px;">
-            <div class="cd-accordion__body-inner">
-              Identificación de patologías en la madera, técnicas de lijado por gradiente y preparación según el tipo de acabado a aplicar. Aprenderás a leer la pieza antes de intervenir.
-              <ul>
-                <li>Tipos de madera y sus comportamientos</li>
-                <li>Lijado a mano y mecánico</li>
-                <li>Masillas, fondos e imprimaciones</li>
-              </ul>
+        <div class="cd-step is-open">
+          <div class="cd-step__num" aria-hidden="true">01</div>
+          <div class="cd-step__card">
+            <button class="cd-step__trigger" aria-expanded="true">
+              <div class="cd-step__head">
+                <span class="cd-step__label">Clase 1 · 3 hs</span>
+                <h3 class="cd-step__title">Diagnóstico y preparación de superficie</h3>
+              </div>
+              <span class="cd-step__icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="cd-step__body">
+              <div class="cd-step__body-inner">
+                <p>Identificación de patologías en la madera, técnicas de lijado por gradiente y preparación según el tipo de acabado a aplicar. Aprenderás a leer la pieza antes de intervenir.</p>
+                <ul>
+                  <li>Tipos de madera y sus comportamientos</li>
+                  <li>Lijado a mano y mecánico</li>
+                  <li>Masillas, fondos e imprimaciones</li>
+                </ul>
+              </div>
             </div>
           </div>
-        </li>
+        </div>
 
-        <li class="cd-accordion__item">
-          <button class="cd-accordion__trigger" aria-expanded="false">
-            <div class="cd-accordion__trigger-left">
-              <span class="cd-accordion__num">02</span>
-              <span class="cd-accordion__title">Tintes, stains y pigmentos naturales</span>
-            </div>
-            <svg class="cd-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 5v14M5 12h14"/>
-            </svg>
-          </button>
-          <div class="cd-accordion__body">
-            <div class="cd-accordion__body-inner">
-              Trabajo con tintes al agua, al solvente y pigmentos naturales. Aprenderás a mezclar tonos, hacer muestras y conseguir resultados homogéneos o efectos especiales.
-              <ul>
-                <li>Tintes al agua vs. al solvente</li>
-                <li>Mezcla y calibrado de color</li>
-                <li>Técnica de frotado y veladura</li>
-              </ul>
+        <div class="cd-step">
+          <div class="cd-step__num" aria-hidden="true">02</div>
+          <div class="cd-step__card">
+            <button class="cd-step__trigger" aria-expanded="false">
+              <div class="cd-step__head">
+                <span class="cd-step__label">Clase 2 · 3 hs</span>
+                <h3 class="cd-step__title">Tintes, stains y pigmentos naturales</h3>
+              </div>
+              <span class="cd-step__icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="cd-step__body">
+              <div class="cd-step__body-inner">
+                <p>Trabajo con tintes al agua, al solvente y pigmentos naturales. Aprenderás a mezclar tonos, hacer muestras y conseguir resultados homogéneos o efectos especiales.</p>
+                <ul>
+                  <li>Tintes al agua vs. al solvente</li>
+                  <li>Mezcla y calibrado de color</li>
+                  <li>Técnica de frotado y veladura</li>
+                </ul>
+              </div>
             </div>
           </div>
-        </li>
+        </div>
 
-        <li class="cd-accordion__item">
-          <button class="cd-accordion__trigger" aria-expanded="false">
-            <div class="cd-accordion__trigger-left">
-              <span class="cd-accordion__num">03</span>
-              <span class="cd-accordion__title">Lacas, barnices y aceites de protección</span>
-            </div>
-            <svg class="cd-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 5v14M5 12h14"/>
-            </svg>
-          </button>
-          <div class="cd-accordion__body">
-            <div class="cd-accordion__body-inner">
-              Diferencias entre cada tipo de producto protector, su aplicación correcta y cómo elegir según el uso final del mueble. Práctica con brocha, rodillo y pistola aerográfica.
-              <ul>
-                <li>Aceites naturales: tung, lino, danish</li>
-                <li>Barnices mate, satinado y brillante</li>
-                <li>Lacas nitrocelulósicas y acrílicas</li>
-              </ul>
+        <div class="cd-step">
+          <div class="cd-step__num" aria-hidden="true">03</div>
+          <div class="cd-step__card">
+            <button class="cd-step__trigger" aria-expanded="false">
+              <div class="cd-step__head">
+                <span class="cd-step__label">Clase 3 · 3 hs</span>
+                <h3 class="cd-step__title">Lacas, barnices y aceites de protección</h3>
+              </div>
+              <span class="cd-step__icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="cd-step__body">
+              <div class="cd-step__body-inner">
+                <p>Diferencias entre cada tipo de producto protector, su aplicación correcta y cómo elegir según el uso final del mueble. Práctica con brocha, rodillo y pistola aerográfica.</p>
+                <ul>
+                  <li>Aceites naturales: tung, lino, danish</li>
+                  <li>Barnices mate, satinado y brillante</li>
+                  <li>Lacas nitrocelulósicas y acrílicas</li>
+                </ul>
+              </div>
             </div>
           </div>
-        </li>
+        </div>
 
-        <li class="cd-accordion__item">
-          <button class="cd-accordion__trigger" aria-expanded="false">
-            <div class="cd-accordion__trigger-left">
-              <span class="cd-accordion__num">04</span>
-              <span class="cd-accordion__title">Pátinas, envejecidos y técnicas mixtas</span>
-            </div>
-            <svg class="cd-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 5v14M5 12h14"/>
-            </svg>
-          </button>
-          <div class="cd-accordion__body">
-            <div class="cd-accordion__body-inner">
-              Clase final integradora. Aprenderás a combinar técnicas para crear acabados con carácter: pátinas oxidadas, craquelados, envejecidos controlados y efectos a pedido del diseñador.
-              <ul>
-                <li>Pátina con mordiente y cera</li>
-                <li>Técnica de decapado y envejecido</li>
-                <li>Proyecto final integrador</li>
-              </ul>
+        <div class="cd-step">
+          <div class="cd-step__num" aria-hidden="true">04</div>
+          <div class="cd-step__card">
+            <button class="cd-step__trigger" aria-expanded="false">
+              <div class="cd-step__head">
+                <span class="cd-step__label">Clase 4 · 4 hs</span>
+                <h3 class="cd-step__title">Pátinas, envejecidos y técnicas mixtas</h3>
+              </div>
+              <span class="cd-step__icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="cd-step__body">
+              <div class="cd-step__body-inner">
+                <p>Clase final integradora. Aprenderás a combinar técnicas para crear acabados con carácter: pátinas oxidadas, craquelados, envejecidos controlados y efectos a pedido del diseñador.</p>
+                <ul>
+                  <li>Pátina con mordiente y cera</li>
+                  <li>Técnica de decapado y envejecido</li>
+                  <li>Proyecto final integrador</li>
+                </ul>
+              </div>
             </div>
           </div>
-        </li>
+        </div>
 
-      </ul>
+      </div>
     </div>
   </section>
 
@@ -965,7 +1125,7 @@
   <!-- ================================
        CERTIFICADO
        ================================ -->
-  <section class="cd-cert">
+  <section class="cd-cert grain-dark">
     <div class="cd-cert__inner">
 
       <div class="cd-cert__text">
@@ -1002,7 +1162,7 @@
   <!-- ================================
        PARA QUIÉN ES
        ================================ -->
-  <section class="cd-quien grain-light">
+  <section class="cd-quien">
     <div class="cd-quien__inner">
       <div class="cd-quien__header">
         <p class="cd-tag">Perfil del alumno</p>
@@ -1043,7 +1203,7 @@
   <!-- ================================
        OPINIONES
        ================================ -->
-  <section class="cd-reviews">
+  <section class="cd-reviews grain-dark">
     <div class="cd-reviews__inner">
       <div class="cd-reviews__header">
         <p class="cd-tag" style="color:#7ecfc0;">Testimoniales</p>
@@ -1102,7 +1262,7 @@
   <!-- ================================
        FAQ
        ================================ -->
-  <section class="cd-faq grain-light">
+  <section class="cd-faq">
     <div class="cd-faq__inner">
       <div class="cd-faq__header">
         <p class="cd-tag">Preguntas frecuentes</p>
@@ -1187,7 +1347,7 @@
   <!-- ================================
        CTA FINAL
        ================================ -->
-  <section class="cd-cta">
+  <section class="cd-cta grain-dark">
     <div class="cd-cta__inner">
       <p class="cd-cta__pre">Próximos grupos disponibles</p>
       <h2 class="cd-cta__heading">¿Listo para elevar<br>tu trabajo?</h2>
@@ -1287,14 +1447,31 @@
 
     document.querySelectorAll('.cd-review').forEach(el => reviewObserver.observe(el));
 
-    // Acordeón
+    // Steps (programa del curso) — pure CSS grid-template-rows animation
+    document.querySelectorAll('.cd-step__trigger').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const step = btn.closest('.cd-step');
+        const isOpen = step.classList.contains('is-open');
+
+        document.querySelectorAll('.cd-step').forEach(s => {
+          s.classList.remove('is-open');
+          s.querySelector('.cd-step__trigger').setAttribute('aria-expanded', 'false');
+        });
+
+        if (!isOpen) {
+          step.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Acordeón FAQ
     document.querySelectorAll('.cd-accordion__trigger').forEach(btn => {
       btn.addEventListener('click', () => {
         const item = btn.closest('.cd-accordion__item');
         const body = item.querySelector('.cd-accordion__body');
         const isOpen = item.classList.contains('is-open');
 
-        // Cerrar todos los del mismo acordeón
         const siblings = item.closest('.cd-accordion').querySelectorAll('.cd-accordion__item');
         siblings.forEach(el => {
           el.classList.remove('is-open');
@@ -1302,7 +1479,6 @@
           el.querySelector('.cd-accordion__trigger').setAttribute('aria-expanded', 'false');
         });
 
-        // Abrir el clickeado si estaba cerrado
         if (!isOpen) {
           item.classList.add('is-open');
           body.style.maxHeight = body.scrollHeight + 'px';

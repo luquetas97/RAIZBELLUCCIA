@@ -479,38 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
     procesoStartAuto();
   }
 
-  /* ---- TIPOS DE MADERA — expanding tabs ---- */
-  const maderaTabs = document.querySelectorAll('.madera__tab');
-
-  if (maderaTabs.length) {
-    let maderaIdx = 0;
-
-    const maderaGoTo = (idx) => {
-      maderaIdx = ((idx % maderaTabs.length) + maderaTabs.length) % maderaTabs.length;
-      maderaTabs.forEach((t, i) => t.classList.toggle('active', i === maderaIdx));
-    };
-
-    let maderaTimer = setInterval(() => maderaGoTo(maderaIdx + 1), 4000);
-
-    maderaTabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => {
-        if (i !== maderaIdx) {
-          maderaGoTo(i);
-          clearInterval(maderaTimer);
-          maderaTimer = setInterval(() => maderaGoTo(maderaIdx + 1), 4000);
-        }
-      });
-    });
-
-    const maderaSection = document.querySelector('.madera__tabs');
-    maderaSection?.addEventListener('mouseenter', () => clearInterval(maderaTimer));
-    maderaSection?.addEventListener('mouseleave', () => {
-      clearInterval(maderaTimer);
-      maderaTimer = setInterval(() => maderaGoTo(maderaIdx + 1), 4000);
-    });
-
-    maderaGoTo(0);
-  }
+  /* ---- TIPOS DE MADERA — filmstrip, pure CSS hover (no JS needed) ---- */
 
   /* ---- MAGNIFIER — lupa sobre anatomía del mueble ---- */
   const magnifierStage = document.getElementById('magnifierStage');
