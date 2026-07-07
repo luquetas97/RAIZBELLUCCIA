@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca UI — RAIZ</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <style>
+
+    /* ============================================
+       BIBLIOTECA UI — ESTILOS PROPIOS
+       ============================================ */
+
+    /* Layout base */
+    .bui-wrap {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 40px 0 40px;
+      gap: 0 64px;
+      align-items: start;
+    }
+
+    /* ---- SIDEBAR ---- */
+    .bui-sidebar {
+      position: sticky;
+      top: calc(var(--nav-h) + 40px);
+      padding: 0 0 80px 0;
+    }
+
+    .bui-sidebar__label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(26,53,48,0.35);
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(26,53,48,0.1);
+    }
+
+    .bui-sidebar__nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .bui-sidebar__nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(26,53,48,0.5);
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+      text-decoration: none;
+    }
+
+    .bui-sidebar__nav a:hover {
+      color: var(--dark);
+      background: rgba(26,53,48,0.06);
+    }
+
+    .bui-sidebar__nav a.is-active {
+      color: var(--teal);
+      background: rgba(45,107,94,0.08);
+      font-weight: 600;
+    }
+
+    .bui-sidebar__nav a::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    .bui-sidebar__nav a.is-active::before {
+      opacity: 1;
+    }
+
+    /* ---- CONTENIDO ---- */
+    .bui-content {
+      padding: 80px 0 120px;
+    }
+
+    .bui-section {
+      margin-bottom: 100px;
+      scroll-margin-top: calc(var(--nav-h) + 40px);
+    }
+
+    .bui-section__header {
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(26,53,48,0.1);
+    }
+
+    .bui-section__tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .bui-section__title {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    /* ---- HERO ---- */
+    .bui-hero {
+      background: var(--plum);
+      padding: calc(var(--nav-h) + 72px) 80px 80px;
+      isolation: isolate;
+    }
+
+    .bui-hero.grain-dark::after { z-index: -1; }
+
+    .bui-hero__inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bui-hero__tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .bui-hero__tag::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--sage);
+      opacity: 0.5;
+    }
+
+    .bui-hero__title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(48px, 6vw, 88px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.02;
+      margin-bottom: 28px;
+    }
+
+    .bui-hero__title em {
+      font-style: italic;
+      color: var(--sage);
+    }
+
+    .bui-hero__desc {
+      font-size: 16px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.55);
+      max-width: 560px;
+    }
+
+    .bui-hero__meta {
+      display: flex;
+      gap: 40px;
+      margin-top: 56px;
+    }
+
+    .bui-hero__meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bui-hero__meta-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .bui-hero__meta-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* ============================================
+       SECCIÓN COLORES
+       ============================================ */
+
+    .bui-swatches {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 3px;
+    }
+
+    .bui-swatch {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .bui-swatch__color {
+      height: 120px;
+      position: relative;
+    }
+
+    .bui-swatch__color::after {
+      content: attr(data-hex);
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-family: var(--font-sans);
+      letter-spacing: 0.04em;
+    }
+
+    .bui-swatch__info {
+      background: var(--cream);
+      padding: 14px 14px 16px;
+    }
+
+    .bui-swatch__name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .bui-swatch__var {
+      font-size: 11px;
+      color: rgba(26,53,48,0.45);
+      font-family: var(--font-sans);
+      letter-spacing: 0.04em;
+    }
+
+    .bui-swatch__hex {
+      font-size: 11px;
+      color: rgba(26,53,48,0.35);
+      margin-top: 2px;
+    }
+
+    /* Extra colors row */
+    .bui-swatches--secondary {
+      grid-template-columns: repeat(5, 1fr);
+      margin-top: 3px;
+    }
+
+    /* ============================================
+       SECCIÓN TIPOGRAFÍA
+       ============================================ */
+
+    .bui-fonts {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .bui-font-card {
+      background: var(--cream);
+      border-radius: 10px;
+      padding: 36px 40px;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .bui-font-card__meta {
+      border-right: 1px solid rgba(26,53,48,0.1);
+      padding-right: 32px;
+    }
+
+    .bui-font-card__role {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .bui-font-card__name {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .bui-font-card__weights {
+      font-size: 11px;
+      color: rgba(26,53,48,0.45);
+      line-height: 1.6;
+    }
+
+    .bui-font-card__preview {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Escala tipográfica */
+    .bui-type-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 3px;
+    }
+
+    .bui-type-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      align-items: baseline;
+      padding: 20px 24px;
+      background: var(--cream);
+      border-bottom: 1px solid rgba(26,53,48,0.06);
+      gap: 24px;
+    }
+
+    .bui-type-row:first-child { border-radius: 10px 10px 0 0; }
+    .bui-type-row:last-child { border-radius: 0 0 10px 10px; border-bottom: none; }
+
+    .bui-type-row__label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(26,53,48,0.35);
+    }
+
+    /* ============================================
+       SECCIÓN TRAMA
+       ============================================ */
+
+    .bui-textures {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+    }
+
+    .bui-texture-card {
+      border-radius: 10px;
+      overflow: hidden;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 32px;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .bui-texture-card--dark {
+      background: var(--dark);
+    }
+
+    .bui-texture-card--plum {
+      background: var(--plum);
+    }
+
+    .bui-texture-card.grain-dark::after,
+    .bui-texture-card.grain-light::after { z-index: -1; }
+
+    .bui-texture-card__content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .bui-texture-card__class {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      opacity: 0.5;
+      margin-bottom: 6px;
+    }
+
+    .bui-texture-card__name {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .bui-texture-card__desc {
+      font-size: 13px;
+      line-height: 1.6;
+      opacity: 0.55;
+    }
+
+    /* ============================================
+       SECCIÓN BOTONES
+       ============================================ */
+
+    .bui-buttons-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .bui-btn-row {
+      background: var(--cream);
+      border-radius: 10px;
+      padding: 32px 36px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .bui-btn-row--dark {
+      background: var(--dark);
+    }
+
+    .bui-btn-row--plum {
+      background: var(--plum);
+    }
+
+    .bui-btn-row__meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bui-btn-row__name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .bui-btn-row--dark .bui-btn-row__name,
+    .bui-btn-row--plum .bui-btn-row__name { color: rgba(255,255,255,0.85); }
+
+    .bui-btn-row__desc {
+      font-size: 12px;
+      color: rgba(26,53,48,0.45);
+    }
+
+    .bui-btn-row--dark .bui-btn-row__desc,
+    .bui-btn-row--plum .bui-btn-row__desc { color: rgba(255,255,255,0.35); }
+
+    .bui-btn-row__items {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* ============================================
+       SECCIÓN TEXTO
+       ============================================ */
+
+    .bui-text-demo {
+      background: var(--cream);
+      border-radius: 10px;
+      padding: 48px 56px;
+    }
+
+    .bui-text-demo__block {
+      padding: 32px 0;
+      border-bottom: 1px solid rgba(26,53,48,0.08);
+    }
+
+    .bui-text-demo__block:first-child { padding-top: 0; }
+    .bui-text-demo__block:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .bui-text-demo__label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(26,53,48,0.3);
+      margin-bottom: 16px;
+    }
+
+    /* ============================================
+       SECCIÓN COMPONENTES
+       ============================================ */
+
+    .bui-components-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+    }
+
+    .bui-component-card {
+      background: var(--cream);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .bui-component-card--full {
+      grid-column: 1 / -1;
+    }
+
+    .bui-component-card__label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(26,53,48,0.35);
+      padding: 20px 24px 0;
+    }
+
+    .bui-component-card__inner {
+      padding: 20px 24px 24px;
+    }
+
+    .bui-component-card--dark {
+      background: var(--dark);
+    }
+
+    .bui-component-card--plum {
+      background: var(--plum);
+    }
+
+    .bui-component-card--dark .bui-component-card__label,
+    .bui-component-card--plum .bui-component-card__label {
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ============================================
+       CARRUSEL
+       ============================================ */
+
+    .bui-carousel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      background: var(--plum);
+      aspect-ratio: 16/7;
+    }
+
+    .bui-carousel__track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.65s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .bui-carousel__slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bui-carousel__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .bui-carousel__shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,16,7,0.65) 0%, transparent 50%);
+    }
+
+    .bui-carousel__caption {
+      position: absolute;
+      bottom: 28px;
+      left: 36px;
+      right: 36px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      z-index: 2;
+    }
+
+    .bui-carousel__caption-text {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .bui-carousel__count {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .bui-carousel__btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      transition: background 0.2s, border-color 0.2s;
+      z-index: 3;
+    }
+
+    .bui-carousel__btn:hover {
+      background: rgba(255,255,255,0.18);
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    .bui-carousel__btn--prev { left: 20px; }
+    .bui-carousel__btn--next { right: 20px; }
+
+    .bui-carousel__dots {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 3;
+    }
+
+    .bui-carousel__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: background 0.2s, width 0.3s;
+      border: none;
+      padding: 0;
+    }
+
+    .bui-carousel__dot.is-active {
+      background: rgba(255,255,255,0.9);
+      width: 20px;
+      border-radius: 3px;
+    }
+
+    /* Progreso barra carrusel */
+    .bui-carousel__progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--sage);
+      z-index: 4;
+      transition: width 0s linear;
+    }
+
+    .bui-carousel__progress.is-animating {
+      transition: width 4s linear;
+    }
+
+    /* ============================================
+       SECCIÓN ESPACIADO & BORDES
+       ============================================ */
+
+    .bui-spacing-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 3px;
+    }
+
+    .bui-spacing-swatch {
+      background: var(--cream);
+      border-radius: 8px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .bui-spacing-swatch__bar {
+      background: rgba(45,107,94,0.15);
+      border: 1px solid rgba(45,107,94,0.25);
+      border-radius: 2px;
+      width: 8px;
+    }
+
+    .bui-spacing-swatch__label {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .bui-spacing-swatch__px {
+      font-size: 11px;
+      color: rgba(26,53,48,0.4);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+
+    @media (max-width: 1024px) {
+      .bui-wrap {
+        grid-template-columns: 1fr;
+        padding: 0 24px;
+      }
+      .bui-sidebar {
+        display: none;
+      }
+      .bui-swatches,
+      .bui-swatches--secondary { grid-template-columns: repeat(3, 1fr); }
+      .bui-components-grid { grid-template-columns: 1fr; }
+      .bui-textures { grid-template-columns: 1fr; }
+      .bui-spacing-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .bui-hero { padding: calc(var(--nav-h) + 48px) 24px 56px; }
+      .bui-hero__meta { flex-direction: column; gap: 20px; }
+      .bui-swatches { grid-template-columns: repeat(2, 1fr); }
+      .bui-btn-row { grid-template-columns: 1fr; }
+      .bui-font-card { grid-template-columns: 1fr; }
+      .bui-font-card__meta { border-right: none; border-bottom: 1px solid rgba(26,53,48,0.1); padding-right: 0; padding-bottom: 20px; }
+      .bui-text-demo { padding: 32px 24px; }
+      .bui-carousel { aspect-ratio: 4/3; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Navegación principal">
+    <a href="index.html" class="nav__logo">
+      <img src="assets/images/logo blanco.png" alt="RAIZ" class="nav__logo-img">
+    </a>
+    <ul class="nav__links">
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="index.html#restauracion">Restauración</a></li>
+      <li><a href="index.html#cursos">Cursos</a></li>
+      <li><a href="index.html#capsula">Cápsula</a></li>
+      <li><a href="biblioteca-ui.html" style="color:var(--sage)!important;font-weight:700;">Biblioteca UI</a></li>
+    </ul>
+    <a href="index.html#contacto" class="nav__cta">Contacto</a>
+    <button class="nav__hamburger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <header class="bui-hero grain-dark">
+    <div class="bui-hero__inner">
+      <p class="bui-hero__tag">RAIZ — Sistema de diseño</p>
+      <h1 class="bui-hero__title">Biblioteca <em>UI</em></h1>
+      <p class="bui-hero__desc">Referencia visual de los componentes, tokens de color, tipografías y texturas que conforman la identidad gráfica de RAIZ Ebanistería & Restauración.</p>
+      <div class="bui-hero__meta">
+        <div class="bui-hero__meta-item">
+          <span class="bui-hero__meta-label">Versión</span>
+          <span class="bui-hero__meta-value">1.0</span>
+        </div>
+        <div class="bui-hero__meta-item">
+          <span class="bui-hero__meta-label">Tipografías</span>
+          <span class="bui-hero__meta-value">Syne · DM Sans · Inter · Cormorant</span>
+        </div>
+        <div class="bui-hero__meta-item">
+          <span class="bui-hero__meta-label">Paleta</span>
+          <span class="bui-hero__meta-value">10 tokens</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BODY: SIDEBAR + CONTENT -->
+  <div class="bui-wrap" style="background: white; min-height: 100vh;">
+
+    <!-- SIDEBAR -->
+    <aside class="bui-sidebar">
+      <p class="bui-sidebar__label">Contenido</p>
+      <ul class="bui-sidebar__nav">
+        <li><a href="#colores">Colores</a></li>
+        <li><a href="#tipografia">Tipografía</a></li>
+        <li><a href="#texturas">Texturas</a></li>
+        <li><a href="#botones">Botones & CTAs</a></li>
+        <li><a href="#texto">Componentes de texto</a></li>
+        <li><a href="#componentes">Componentes UI</a></li>
+        <li><a href="#espaciado">Espaciado</a></li>
+        <li><a href="#galeria">Galería de fotos</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="bui-content">
+
+      <!-- ================================
+           COLORES
+           ================================ -->
+      <section class="bui-section" id="colores">
+        <div class="bui-section__header">
+          <p class="bui-section__tag">Tokens</p>
+          <h2 class="bui-section__title">Paleta de colores</h2>
+        </div>
+
+        <div class="bui-swatches">
+
+          <div class="bui-swatch">
+            <div class="bui-swatch__color" style="background:#1a1007;">
+              <span style="color:rgba(255,255,255,0.35); position:absolute; bottom:12px; left:14px; font-size:11px; font-family: var(--font-sans);">#1a1007</span>
+            </div>
+            <div class="bui-swatch__info">
+              <div class="bui-swatch__name">Plum</div>
+              <div class="bui-swatch__var">--plum</div>
+              <div class="bui-swatch__hex">Fondo hero / CTA oscuro</div>
+            </div>
+          </div>
+
+          <div class="bui-swatch">
+            <div class="bui-swatch__color" style="background:#1a3530;">
+              <span style="color:rgba(255,255,255,0.35); position:absolute; bottom:12px; left:14px; font-size:11px; font-family: var(--font-sans);">#1a3530</span>
+            </div>
+            <div class="bui-swatch__info">
+              <div class="bui-swatch__name">Dark</div>
+              <div class="bui-swatch__var">--dark</div>
+              <div class="bui-swatch__hex">Nav / texto principal</div>
+            </div>
+          </div>
+
+          <div class="bui-swatch">
+            <div class="bui-swatch__color" style="background:#244740;">
+              <span style="color:rgba(255,255,255,0.35); position:absolute; bottom:12px; left:14px; font-size:11px; font-family: var(--font-sans);">#244740</span>
+            </div>
+            <div class="bui-swatch__info">
+              <div class="bui-swatch__name">Dark Mid</div>
+              <div class="bui-swatch__var">--dark-mid</div>
+              <div class="bui-swatch__hex">Hover states, variaciones</div>
+            </div>
+          </div>
+
+          <div class="bui-swatch">
+            <div class="bui-swatch__color" style="background:#2d6b5e;">
+              <span style="color:rgba(255,255,255,0.45); position:absolute; bottom:12px; left:14px; font-size:11px; font-family: var(--font-sans);">#2d6b5e</span>
+            </div>
+            <div class="bui-swatch__info">
+              <div class="bui-swatch__name">Teal</div>
+              <div class="bui-swatch__var">--teal</div>
+              <div class="bui-swatch__hex">Acentos / em en cream</div>
+            </div>
+          </div>
+
+          <div class="bui-swatch">
+            <div class="bui-swatch__color" style="background:#7ecfc0;">
+              <span style="color:rgba(26,53,48,0.5); position:absolute; bottom:12px; left:14px; font-size:11px; font-family: var(--font-sans);">#7ecfc0</span>
+            </div>
+            <div class="bui-swatch__info">
+              <div class="bui-swatch__name">Sage</div>
+              <div class="bui-swatch__var">--sage</div>
+              <div class="bui-swatch__hex">Botones / em en dark</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="bui-swatches bui-swatches--secondary" style="margin-top:3px;">
+
+          <div class="bui-swatch">
+            <div class="bui-swatch__color" style="background:#c9b89a;">
+              <span style="color:rgba(26,16,7,0.45); position:absolute; bottom:12px; left:14px; font-size:11px; font-family: var(--font-sans);">#c9b89a</span>
+            </div>
+            <div class="bui-swatch__info">
+              <div class="bui-swatch__name">Sand</div>
+              <div class="bui-swatch__var">--sand</div>
+              <div class="bui-swatch__hex">Bordes cálidos, separadores</div>
+            </div>
+          </div>
+
+          <div class="bui-swatch">
+            <div class="bui-swatch__color" style="background:#6e9b38;">
+              <span style="color:rgba(255,255,255,0.55); position:absolute; bottom:12px; left:14px; font-size:11px; font-family: var(--font-sans);">#6e9b38</span>
+            </div>
+            <div class="bui-swatch__info">
+              <div class="bui-swatch__name">Apple</div>
+              <div class="bui-swatch__var">--apple</div>
+              <div class="bui-swatch__hex">Sección especial / naturaleza</div>
+            </div>
+          </div>
+
+          <div class="bui-swatch">
+            <div class="bui-swatch__color" style="background:#f2ede4;">
+              <span style="color:rgba(26,53,48,0.3); position:absolute; bottom:12px; left:14px; font-size:11px; font-family: var(--font-sans);">#f2ede4</span>
+            </div>
+            <div class="bui-swatch__info">
+              <div class="bui-swatch__name">Cream</div>
+              <div class="bui-swatch__var">--cream</div>
+              <div class="bui-swatch__hex">Fondo base / secciones claras</div>
+            </div>
+          </div>
+
+          <div class="bui-swatch">
+            <div class="bui-swatch__color" style="background:#e8e0d3; border: 1px solid rgba(26,53,48,0.06);">
+              <span style="color:rgba(26,53,48,0.3); position:absolute; bottom:12px; left:14px; font-size:11px; font-family: var(--font-sans);">#e8e0d3</span>
+            </div>
+            <div class="bui-swatch__info">
+              <div class="bui-swatch__name">Cream Dark</div>
+              <div class="bui-swatch__var">--cream-dark</div>
+              <div class="bui-swatch__hex">Cards sobre cream, bordes</div>
+            </div>
+          </div>
+
+          <div class="bui-swatch">
+            <div class="bui-swatch__color" style="background:#ffffff; border: 1px solid rgba(26,53,48,0.08);">
+              <span style="color:rgba(26,53,48,0.3); position:absolute; bottom:12px; left:14px; font-size:11px; font-family: var(--font-sans);">#ffffff</span>
+            </div>
+            <div class="bui-swatch__info">
+              <div class="bui-swatch__name">White</div>
+              <div class="bui-swatch__var">--white</div>
+              <div class="bui-swatch__hex">Texto sobre fondos oscuros</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================
+           TIPOGRAFÍA
+           ================================ -->
+      <section class="bui-section" id="tipografia">
+        <div class="bui-section__header">
+          <p class="bui-section__tag">Fuentes</p>
+          <h2 class="bui-section__title">Tipografía</h2>
+        </div>
+
+        <div class="bui-fonts">
+
+          <div class="bui-font-card">
+            <div class="bui-font-card__meta">
+              <p class="bui-font-card__role">Display / Headings</p>
+              <p class="bui-font-card__name">Syne</p>
+              <p class="bui-font-card__weights">300 · 400 · 700</p>
+            </div>
+            <div class="bui-font-card__preview">
+              <span style="font-family:'Syne',sans-serif; font-size:40px; font-weight:700; color:var(--dark); line-height:1.1;">Ebanistería & Arte</span>
+              <span style="font-family:'Syne',sans-serif; font-size:22px; font-weight:400; color:var(--teal);">Restauración de piezas únicas</span>
+              <span style="font-family:'Syne',sans-serif; font-size:14px; font-weight:300; color:rgba(26,53,48,0.5);">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</span>
+            </div>
+          </div>
+
+          <div class="bui-font-card">
+            <div class="bui-font-card__meta">
+              <p class="bui-font-card__role">UI / Interfaz</p>
+              <p class="bui-font-card__name">DM Sans</p>
+              <p class="bui-font-card__weights">300 · 400 · 500 · 700</p>
+            </div>
+            <div class="bui-font-card__preview">
+              <span style="font-family:'DM Sans',sans-serif; font-size:28px; font-weight:700; color:var(--dark);">Botones, etiquetas, nav</span>
+              <span style="font-family:'DM Sans',sans-serif; font-size:15px; font-weight:500; color:rgba(26,53,48,0.7);">Cada detalle tiene su razón de ser</span>
+              <span style="font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; color:rgba(26,53,48,0.4); letter-spacing:0.14em; text-transform:uppercase;">ETIQUETA · NIVEL INICIAL · CONTACTO</span>
+            </div>
+          </div>
+
+          <div class="bui-font-card">
+            <div class="bui-font-card__meta">
+              <p class="bui-font-card__role">Cuerpo de texto</p>
+              <p class="bui-font-card__name">Inter</p>
+              <p class="bui-font-card__weights">300 · 400 · 500</p>
+            </div>
+            <div class="bui-font-card__preview">
+              <span style="font-family:'Inter',sans-serif; font-size:16px; font-weight:400; color:rgba(26,53,48,0.8); line-height:1.75;">El trabajo artesanal con madera es una disciplina que combina precisión técnica con sensibilidad estética. Cada pieza merece ser trabajada con tiempo.</span>
+              <span style="font-family:'Inter',sans-serif; font-size:13px; font-weight:300; color:rgba(26,53,48,0.5);">Texto de apoyo, descripciones secundarias y metadatos informativos.</span>
+            </div>
+          </div>
+
+          <div class="bui-font-card">
+            <div class="bui-font-card__meta">
+              <p class="bui-font-card__role">Serif / Acento</p>
+              <p class="bui-font-card__name">Cormorant Garamond</p>
+              <p class="bui-font-card__weights">300i · 400 · 400i · 600 · 600i</p>
+            </div>
+            <div class="bui-font-card__preview">
+              <span style="font-family:'Cormorant Garamond',serif; font-size:44px; font-style:italic; font-weight:300; color:var(--dark); line-height:1.1;">maderas · restauración</span>
+              <span style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--teal);">Números decorativos — 01 02 03 04</span>
+              <span style="font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; font-weight:400; color:rgba(26,53,48,0.55);">"La madera guarda la memoria del árbol que fue."</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Escala tipográfica -->
+        <div style="margin-top: 3px;">
+          <div class="bui-type-scale">
+            <div class="bui-type-row">
+              <span class="bui-type-row__label">Display</span>
+              <span style="font-family:'Syne',sans-serif; font-size:clamp(52px,6vw,88px); font-weight:700; color:var(--dark); line-height:1;">Aa</span>
+            </div>
+            <div class="bui-type-row">
+              <span class="bui-type-row__label">H1</span>
+              <span style="font-family:'Syne',sans-serif; font-size:clamp(40px,4vw,64px); font-weight:700; color:var(--dark);">Acabados & protección</span>
+            </div>
+            <div class="bui-type-row">
+              <span class="bui-type-row__label">H2</span>
+              <span style="font-family:'Syne',sans-serif; font-size:clamp(28px,3vw,44px); font-weight:700; color:var(--dark);">Programa del curso</span>
+            </div>
+            <div class="bui-type-row">
+              <span class="bui-type-row__label">H3</span>
+              <span style="font-family:'Syne',sans-serif; font-size:20px; font-weight:700; color:var(--dark);">Diagnóstico y preparación de superficie</span>
+            </div>
+            <div class="bui-type-row">
+              <span class="bui-type-row__label">Body</span>
+              <span style="font-family:'Inter',sans-serif; font-size:16px; color:rgba(26,53,48,0.75); line-height:1.7;">Aprendé técnicas profesionales de acabado con materiales de primer nivel.</span>
+            </div>
+            <div class="bui-type-row">
+              <span class="bui-type-row__label">Small</span>
+              <span style="font-family:'DM Sans',sans-serif; font-size:13px; color:rgba(26,53,48,0.5);">Nivel inicial · 4 clases · Materiales incluidos</span>
+            </div>
+            <div class="bui-type-row">
+              <span class="bui-type-row__label">Label</span>
+              <span style="font-family:'DM Sans',sans-serif; font-size:11px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal);">Contenido del programa</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================
+           TEXTURAS
+           ================================ -->
+      <section class="bui-section" id="texturas">
+        <div class="bui-section__header">
+          <p class="bui-section__tag">Efectos</p>
+          <h2 class="bui-section__title">Trama de grano</h2>
+        </div>
+
+        <div class="bui-textures">
+
+          <div class="bui-texture-card bui-texture-card--dark grain-dark">
+            <div class="bui-texture-card__content">
+              <p class="bui-texture-card__class" style="color:rgba(255,255,255,0.4);">.grain-dark</p>
+              <h3 class="bui-texture-card__name" style="color:white;">Trama oscura</h3>
+              <p class="bui-texture-card__desc" style="color:rgba(255,255,255,0.5);">Usada sobre fondos <strong style="color:rgba(255,255,255,0.7);">--dark</strong>, <strong style="color:rgba(255,255,255,0.7);">--plum</strong> y secciones de color profundo. Aporta textura orgánica sin perder legibilidad.</p>
+            </div>
+          </div>
+
+          <div class="bui-texture-card bui-texture-card--plum grain-dark">
+            <div class="bui-texture-card__content">
+              <p class="bui-texture-card__class" style="color:rgba(255,255,255,0.4);">.grain-dark sobre --plum</p>
+              <h3 class="bui-texture-card__name" style="color:white;">Variante marrón</h3>
+              <p class="bui-texture-card__desc" style="color:rgba(255,255,255,0.5);">Fondo <strong style="color:rgba(255,255,255,0.7);">--plum #1a1007</strong>. Se usa en hero del curso, CTA final y secciones de certificado. Tono cálido y denso.</p>
+            </div>
+          </div>
+
+          <div class="bui-texture-card grain-light" style="background:var(--cream); min-height:200px;">
+            <div class="bui-texture-card__content">
+              <p class="bui-texture-card__class" style="color:rgba(26,53,48,0.35);">.grain-light</p>
+              <h3 class="bui-texture-card__name" style="color:var(--dark);">Trama clara</h3>
+              <p class="bui-texture-card__desc" style="color:rgba(26,53,48,0.5);">Sobre fondos <strong style="color:var(--teal);">--cream</strong> y secciones blancas. Muy sutil, da cuerpo al fondo sin generar ruido visual.</p>
+            </div>
+          </div>
+
+          <div class="bui-texture-card" style="background:var(--cream); min-height:200px; border: 2px dashed rgba(26,53,48,0.1); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:12px;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(26,53,48,0.2)" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+            <p style="font-size:13px; color:rgba(26,53,48,0.3); text-align:center; font-family:var(--font-sans);">Sin trama<br><span style="font-size:11px; opacity:0.6;">Secciones blancas y de contenido limpio</span></p>
+          </div>
+
+        </div>
+
+        <p style="font-size:13px; color:rgba(26,53,48,0.45); margin-top:16px; font-family:var(--font-sans); line-height:1.7;">
+          <strong style="color:var(--teal);">Regla de uso:</strong> las tramas van <em>detrás</em> del contenido mediante <code style="background:rgba(26,53,48,0.06); padding:2px 6px; border-radius:3px;">isolation: isolate</code> en la sección y <code style="background:rgba(26,53,48,0.06); padding:2px 6px; border-radius:3px;">::after { z-index: -1 }</code>. Nunca se aplica <code style="background:rgba(26,53,48,0.06); padding:2px 6px; border-radius:3px;">grain-light</code> sobre fondos oscuros ni viceversa.
+        </p>
+      </section>
+
+      <!-- ================================
+           BOTONES & CTAs
+           ================================ -->
+      <section class="bui-section" id="botones">
+        <div class="bui-section__header">
+          <p class="bui-section__tag">Acciones</p>
+          <h2 class="bui-section__title">Botones & CTAs</h2>
+        </div>
+
+        <div class="bui-buttons-grid">
+
+          <div class="bui-btn-row">
+            <div class="bui-btn-row__meta">
+              <span class="bui-btn-row__name" style="color:var(--dark);">Primario</span>
+              <span class="bui-btn-row__desc">Acción principal. Sage sobre dark.</span>
+            </div>
+            <div class="bui-btn-row__items">
+              <a href="#" class="btn-primary" style="display:inline-flex;align-items:center;gap:10px;background:var(--sage);color:var(--dark);font-family:var(--font-sans);font-size:14px;font-weight:700;padding:16px 34px;border-radius:4px;text-decoration:none;transition:background 0.2s;">
+                Inscribirse
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <span style="font-size:12px; color:rgba(26,53,48,0.4); font-family:var(--font-sans);">background: --sage<br>color: --dark</span>
+            </div>
+          </div>
+
+          <div class="bui-btn-row bui-btn-row--dark">
+            <div class="bui-btn-row__meta">
+              <span class="bui-btn-row__name">Ghost claro</span>
+              <span class="bui-btn-row__desc">Sobre fondos oscuros.</span>
+            </div>
+            <div class="bui-btn-row__items">
+              <a href="#" style="display:inline-flex;align-items:center;gap:10px;background:transparent;color:white;font-family:var(--font-sans);font-size:14px;font-weight:600;padding:14px 30px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);text-decoration:none;">
+                Ver programa
+              </a>
+              <a href="#" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:rgba(255,255,255,0.65);font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;">
+                Consultar por WhatsApp →
+              </a>
+            </div>
+          </div>
+
+          <div class="bui-btn-row bui-btn-row--plum">
+            <div class="bui-btn-row__meta">
+              <span class="bui-btn-row__name">CTA doble</span>
+              <span class="bui-btn-row__desc">Combinación primary + ghost.</span>
+            </div>
+            <div class="bui-btn-row__items">
+              <a href="#" style="display:inline-flex;align-items:center;gap:10px;background:var(--sage);color:var(--plum);font-family:var(--font-sans);font-size:14px;font-weight:700;padding:16px 34px;border-radius:4px;text-decoration:none;">
+                Reservar lugar
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <a href="#" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:rgba(255,255,255,0.55);font-family:var(--font-sans);font-size:13px;font-weight:500;padding:16px 20px;border:1px solid rgba(255,255,255,0.15);border-radius:4px;text-decoration:none;">
+                Ver más cursos
+              </a>
+            </div>
+          </div>
+
+          <div class="bui-btn-row">
+            <div class="bui-btn-row__meta">
+              <span class="bui-btn-row__name" style="color:var(--dark);">Pills / Tags</span>
+              <span class="bui-btn-row__desc">Etiquetas de nivel y estado.</span>
+            </div>
+            <div class="bui-btn-row__items" style="flex-wrap:wrap; gap:10px;">
+              <span style="font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#7ecfc0;border:1px solid rgba(126,207,192,0.35);padding:5px 14px;border-radius:20px;font-family:var(--font-sans);">Nivel inicial</span>
+              <span style="font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#7ecfc0;border:1px solid rgba(126,207,192,0.35);padding:5px 14px;border-radius:20px;font-family:var(--font-sans);">Nivel avanzado</span>
+              <span style="font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);border:1px solid rgba(45,107,94,0.25);padding:5px 14px;border-radius:20px;font-family:var(--font-sans);background:rgba(45,107,94,0.06);">Presencial</span>
+              <span style="font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);border:1px solid rgba(45,107,94,0.25);padding:5px 14px;border-radius:20px;font-family:var(--font-sans);background:rgba(45,107,94,0.06);">4 clases</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================
+           COMPONENTES DE TEXTO
+           ================================ -->
+      <section class="bui-section" id="texto">
+        <div class="bui-section__header">
+          <p class="bui-section__tag">Contenido</p>
+          <h2 class="bui-section__title">Componentes de texto</h2>
+        </div>
+
+        <div class="bui-text-demo">
+
+          <div class="bui-text-demo__block">
+            <p class="bui-text-demo__label">Section tag</p>
+            <p style="font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--teal);">Programa del curso</p>
+          </div>
+
+          <div class="bui-text-demo__block">
+            <p class="bui-text-demo__label">Heading + em en dark (verde)</p>
+            <h2 style="font-family:'Syne',sans-serif;font-size:clamp(32px,3.5vw,52px);font-weight:700;color:var(--dark);line-height:1.1;">Nuestras <em style="font-style:italic;color:var(--teal);">maderas</em></h2>
+          </div>
+
+          <div class="bui-text-demo__block">
+            <p class="bui-text-demo__label">Heading + em en plum (sage)</p>
+            <div style="background:var(--plum);padding:32px;border-radius:8px;">
+              <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,3vw,48px);font-weight:700;color:white;line-height:1.15;">Cada pieza terminada<br>es una <em style="font-style:italic;color:var(--sage);">firma propia</em></h2>
+            </div>
+          </div>
+
+          <div class="bui-text-demo__block">
+            <p class="bui-text-demo__label">Section heading con serif italic (Cormorant)</p>
+            <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,64px);font-style:italic;font-weight:300;color:var(--dark);line-height:1.15;">maderas · restauración · oficio</h2>
+          </div>
+
+          <div class="bui-text-demo__block">
+            <p class="bui-text-demo__label">Cuerpo de texto</p>
+            <p style="font-family:'Inter',sans-serif;font-size:16px;line-height:1.75;color:rgba(26,53,48,0.75);max-width:580px;">Aprendé a terminar y proteger muebles restaurados con técnicas profesionales: tintes, aceites, lacas y pátinas que transforman una pieza sólida en una obra con identidad propia.</p>
+          </div>
+
+          <div class="bui-text-demo__block">
+            <p class="bui-text-demo__label">Separador de sección (breadcrumb / meta)</p>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(26,53,48,0.4);font-family:var(--font-sans);">
+              <a href="#" style="color:rgba(26,53,48,0.4);text-decoration:none;">Inicio</a>
+              <span>›</span>
+              <a href="#" style="color:rgba(26,53,48,0.4);text-decoration:none;">Cursos</a>
+              <span>›</span>
+              <span>Acabados & protección</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================
+           COMPONENTES UI
+           ================================ -->
+      <section class="bui-section" id="componentes">
+        <div class="bui-section__header">
+          <p class="bui-section__tag">Piezas</p>
+          <h2 class="bui-section__title">Componentes UI</h2>
+        </div>
+
+        <div class="bui-components-grid">
+
+          <!-- Curso card -->
+          <div class="bui-component-card">
+            <p class="bui-component-card__label">Curso card</p>
+            <div class="bui-component-card__inner">
+              <a href="curso-acabados.html" class="curso-row reveal is-visible" style="min-height:340px;border-radius:8px;overflow:hidden;display:block;position:relative;text-decoration:none;">
+                <img class="curso-row__bg" src="assets/images/Acabados & protección.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;">
+                <div class="curso-row__shade" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(20,44,38,0.92) 0%,rgba(20,44,38,0.1) 60%,transparent 100%);"></div>
+                <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;height:100%;min-height:340px;padding:28px;">
+                  <div style="display:flex;justify-content:space-between;">
+                    <span style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,0.45);">01</span>
+                    <span style="font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#7ecfc0;border:1px solid rgba(126,207,192,0.3);padding:4px 10px;border-radius:20px;font-family:var(--font-sans);">Nivel avanzado</span>
+                  </div>
+                  <div>
+                    <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:white;line-height:1.25;margin-bottom:8px;">Acabados &amp; protección</h3>
+                    <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:16px;font-family:'Inter',sans-serif;">Terminá tus piezas con criterio profesional.</p>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);">
+                      <div style="display:flex;gap:16px;">
+                        <span style="font-size:12px;color:rgba(255,255,255,0.5);font-family:var(--font-sans);">4 clases</span>
+                        <span style="font-size:12px;color:rgba(255,255,255,0.7);font-family:'Syne',sans-serif;font-weight:700;">$52.000</span>
+                      </div>
+                      <span style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);">→</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Review card -->
+          <div class="bui-component-card bui-component-card--dark">
+            <p class="bui-component-card__label">Review card</p>
+            <div class="bui-component-card__inner">
+              <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:28px;">
+                <div style="display:flex;gap:4px;margin-bottom:16px;">
+                  <span style="color:#7ecfc0;font-size:14px;">★★★★★</span>
+                </div>
+                <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.75);font-family:'Inter',sans-serif;margin-bottom:20px;">"El taller me cambió la perspectiva. Lo que creía imposible se volvió parte de mi rutina de trabajo."</p>
+                <div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);">
+                  <div style="width:36px;height:36px;border-radius:50%;background:rgba(126,207,192,0.15);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#7ecfc0;">M</div>
+                  <div>
+                    <p style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:white;">Martina G.</p>
+                    <p style="font-size:11px;color:rgba(255,255,255,0.35);font-family:var(--font-sans);">Curso de Restauración básica</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step del programa -->
+          <div class="bui-component-card bui-component-card--full">
+            <p class="bui-component-card__label">Step del programa (is-open)</p>
+            <div class="bui-component-card__inner">
+              <div style="display:grid;grid-template-columns:80px 1fr;gap:0 24px;">
+                <div style="font-family:'Syne',sans-serif;font-style:italic;font-size:52px;font-weight:700;color:var(--teal);line-height:1;padding-top:26px;text-align:right;">01</div>
+                <div style="border-top:1px solid rgba(26,53,48,0.12);">
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:26px 0;gap:16px;">
+                    <div>
+                      <p style="font-size:11px;font-weight:500;letter-spacing:0.13em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;font-family:var(--font-sans);">Clase 1 · 3 hs</p>
+                      <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--dark);">Diagnóstico y preparación de superficie</h3>
+                    </div>
+                    <span style="width:36px;height:36px;flex-shrink:0;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;color:white;transform:rotate(45deg);">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                    </span>
+                  </div>
+                  <div style="padding:0 40px 28px 0;">
+                    <p style="font-size:14px;line-height:1.85;color:rgba(26,53,48,0.62);font-family:'Inter',sans-serif;margin-bottom:12px;">Identificación de patologías en la madera, técnicas de lijado por gradiente y preparación según el tipo de acabado.</p>
+                    <ul style="padding-left:18px;font-size:14px;color:rgba(26,53,48,0.62);font-family:'Inter',sans-serif;line-height:1.85;">
+                      <li>Tipos de madera y sus comportamientos</li>
+                      <li>Lijado a mano y mecánico</li>
+                      <li>Masillas, fondos e imprimaciones</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Banner valor -->
+          <div class="bui-component-card bui-component-card--full">
+            <p class="bui-component-card__label">Banner valor (separador)</p>
+            <div class="bui-component-card__inner" style="padding:0;">
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);">
+                <div style="padding:32px 40px;background:var(--dark);display:flex;flex-direction:column;gap:12px;">
+                  <p style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:var(--font-sans);">01</p>
+                  <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:white;line-height:1.3;">Madera que dura décadas</h3>
+                  <p style="font-size:13px;line-height:1.65;color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;">Seleccionamos cada pieza con el mismo criterio con que elegiríamos los materiales de nuestra propia casa.</p>
+                </div>
+                <div style="padding:32px 40px;background:#244740;display:flex;flex-direction:column;gap:12px;">
+                  <p style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:var(--font-sans);">02</p>
+                  <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:white;line-height:1.3;">Diseño que respeta el origen</h3>
+                  <p style="font-size:13px;line-height:1.65;color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;">Cada intervención se piensa desde la pieza, no desde una tendencia.</p>
+                </div>
+                <div style="padding:32px 40px;background:var(--teal);display:flex;flex-direction:column;gap:12px;">
+                  <p style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:var(--font-sans);">03</p>
+                  <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:white;line-height:1.3;">Oficio transmitido</h3>
+                  <p style="font-size:13px;line-height:1.65;color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;">Formamos artesanos que llevan el criterio RAIZ a su propio taller.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================
+           ESPACIADO
+           ================================ -->
+      <section class="bui-section" id="espaciado">
+        <div class="bui-section__header">
+          <p class="bui-section__tag">Tokens</p>
+          <h2 class="bui-section__title">Espaciado & bordes</h2>
+        </div>
+
+        <div class="bui-spacing-grid">
+          <div class="bui-spacing-swatch">
+            <div class="bui-spacing-swatch__bar" style="height:4px;"></div>
+            <span class="bui-spacing-swatch__label">4</span>
+            <span class="bui-spacing-swatch__px">px · gap mínimo</span>
+          </div>
+          <div class="bui-spacing-swatch">
+            <div class="bui-spacing-swatch__bar" style="height:8px;"></div>
+            <span class="bui-spacing-swatch__label">8</span>
+            <span class="bui-spacing-swatch__px">px · inline</span>
+          </div>
+          <div class="bui-spacing-swatch">
+            <div class="bui-spacing-swatch__bar" style="height:16px;"></div>
+            <span class="bui-spacing-swatch__label">16</span>
+            <span class="bui-spacing-swatch__px">px · elementos</span>
+          </div>
+          <div class="bui-spacing-swatch">
+            <div class="bui-spacing-swatch__bar" style="height:32px;"></div>
+            <span class="bui-spacing-swatch__label">32</span>
+            <span class="bui-spacing-swatch__px">px · grupos</span>
+          </div>
+          <div class="bui-spacing-swatch">
+            <div class="bui-spacing-swatch__bar" style="height:56px;"></div>
+            <span class="bui-spacing-swatch__label">56</span>
+            <span class="bui-spacing-swatch__px">px · secciones</span>
+          </div>
+          <div class="bui-spacing-swatch">
+            <div class="bui-spacing-swatch__bar" style="height:80px;"></div>
+            <span class="bui-spacing-swatch__label">80–104</span>
+            <span class="bui-spacing-swatch__px">px · padding sección</span>
+          </div>
+        </div>
+
+        <!-- Radios -->
+        <div style="margin-top:3px;background:var(--cream);border-radius:10px;padding:28px 32px;">
+          <p class="bui-text-demo__label" style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,53,48,0.3);margin-bottom:20px;">Border radius</p>
+          <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:56px;height:56px;background:var(--teal);border-radius:4px;"></div>
+              <span style="font-size:11px;color:rgba(26,53,48,0.45);font-family:var(--font-sans);">4px · botones</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:56px;height:56px;background:var(--teal);border-radius:8px;"></div>
+              <span style="font-size:11px;color:rgba(26,53,48,0.45);font-family:var(--font-sans);">8px · cards</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:56px;height:56px;background:var(--teal);border-radius:10px;"></div>
+              <span style="font-size:11px;color:rgba(26,53,48,0.45);font-family:var(--font-sans);">10px · panels</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:56px;height:56px;background:var(--teal);border-radius:50%;"></div>
+              <span style="font-size:11px;color:rgba(26,53,48,0.45);font-family:var(--font-sans);">50% · iconos</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:80px;height:30px;background:var(--sage);border-radius:20px;"></div>
+              <span style="font-size:11px;color:rgba(26,53,48,0.45);font-family:var(--font-sans);">20px · pills</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================
+           GALERÍA / CARRUSEL
+           ================================ -->
+      <section class="bui-section" id="galeria">
+        <div class="bui-section__header">
+          <p class="bui-section__tag">Fotos</p>
+          <h2 class="bui-section__title">Galería de imágenes</h2>
+        </div>
+
+        <div class="bui-carousel" id="carousel">
+          <div class="bui-carousel__progress" id="carouselProgress"></div>
+
+          <div class="bui-carousel__track" id="carouselTrack">
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/1.png" alt="RAIZ — imagen 1" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">Taller RAIZ</span>
+                <span class="bui-carousel__count" id="carouselCount">1 / 11</span>
+              </div>
+            </div>
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/2.png" alt="RAIZ — imagen 2" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">Taller RAIZ</span>
+              </div>
+            </div>
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/3.png" alt="RAIZ — imagen 3" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">Taller RAIZ</span>
+              </div>
+            </div>
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/4.png" alt="RAIZ — imagen 4" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">Taller RAIZ</span>
+              </div>
+            </div>
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/5.png" alt="RAIZ — imagen 5" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">Taller RAIZ</span>
+              </div>
+            </div>
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/6.png" alt="RAIZ — imagen 6" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">Taller RAIZ</span>
+              </div>
+            </div>
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/Detalle.png" alt="Detalle" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">Detalle de pieza</span>
+              </div>
+            </div>
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/Detalle2.png" alt="Detalle 2" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">Detalle de pieza</span>
+              </div>
+            </div>
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/Foto del taller.png" alt="Foto del taller" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">El taller</span>
+              </div>
+            </div>
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/Proceso.png" alt="Proceso" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">En proceso</span>
+              </div>
+            </div>
+
+            <div class="bui-carousel__slide">
+              <img src="assets/images/mueble listo.png" alt="Mueble terminado" class="bui-carousel__img">
+              <div class="bui-carousel__shade"></div>
+              <div class="bui-carousel__caption">
+                <span class="bui-carousel__caption-text">Resultado final</span>
+              </div>
+            </div>
+
+          </div>
+
+          <button class="bui-carousel__btn bui-carousel__btn--prev" id="carouselPrev" aria-label="Anterior">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+
+          <button class="bui-carousel__btn bui-carousel__btn--next" id="carouselNext" aria-label="Siguiente">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+
+          <div class="bui-carousel__dots" id="carouselDots"></div>
+        </div>
+
+        <!-- Grid de miniaturas -->
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-top:3px;border-radius:8px;overflow:hidden;">
+          <img src="assets/images/1.png" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;cursor:pointer;opacity:0.75;transition:opacity 0.2s;" onclick="goToSlide(0)" class="carousel-thumb">
+          <img src="assets/images/2.png" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;cursor:pointer;opacity:0.75;transition:opacity 0.2s;" onclick="goToSlide(1)" class="carousel-thumb">
+          <img src="assets/images/3.png" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;cursor:pointer;opacity:0.75;transition:opacity 0.2s;" onclick="goToSlide(2)" class="carousel-thumb">
+          <img src="assets/images/4.png" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;cursor:pointer;opacity:0.75;transition:opacity 0.2s;" onclick="goToSlide(3)" class="carousel-thumb">
+          <img src="assets/images/5.png" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;cursor:pointer;opacity:0.75;transition:opacity 0.2s;" onclick="goToSlide(4)" class="carousel-thumb">
+          <img src="assets/images/6.png" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;cursor:pointer;opacity:0.75;transition:opacity 0.2s;" onclick="goToSlide(5)" class="carousel-thumb">
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+
+    const TOTAL = 11;
+    let current = 0;
+    let autoTimer = null;
+    const INTERVAL = 4000;
+
+    const track     = document.getElementById('carouselTrack');
+    const dotsWrap  = document.getElementById('carouselDots');
+    const countEl   = document.getElementById('carouselCount');
+    const progress  = document.getElementById('carouselProgress');
+
+    // Crear dots
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('button');
+      d.className = 'bui-carousel__dot' + (i === 0 ? ' is-active' : '');
+      d.setAttribute('aria-label', 'Ir a imagen ' + (i + 1));
+      d.addEventListener('click', () => goToSlide(i));
+      dotsWrap.appendChild(d);
+    }
+
+    function goToSlide(n) {
+      current = (n + TOTAL) % TOTAL;
+      track.style.transform = 'translateX(-' + (current * 100) + '%)';
+      if (countEl) countEl.textContent = (current + 1) + ' / ' + TOTAL;
+      // dots
+      dotsWrap.querySelectorAll('.bui-carousel__dot').forEach((d, i) => {
+        d.classList.toggle('is-active', i === current);
+      });
+      // thumbnails
+      document.querySelectorAll('.carousel-thumb').forEach((t, i) => {
+        t.style.opacity = i === current ? '1' : '0.65';
+        t.style.outline = i === current ? '2px solid var(--sage)' : 'none';
+      });
+      resetProgress();
+    }
+
+    function resetProgress() {
+      progress.classList.remove('is-animating');
+      progress.style.width = '0%';
+      clearTimeout(autoTimer);
+      // Force reflow then animate
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          progress.style.width = '100%';
+          progress.classList.add('is-animating');
+        });
+      });
+      autoTimer = setTimeout(() => goToSlide(current + 1), INTERVAL);
+    }
+
+    document.getElementById('carouselPrev').addEventListener('click', () => goToSlide(current - 1));
+    document.getElementById('carouselNext').addEventListener('click', () => goToSlide(current + 1));
+
+    // Swipe touch
+    let touchStartX = 0;
+    const carousel = document.getElementById('carousel');
+    carousel.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    carousel.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) goToSlide(dx < 0 ? current + 1 : current - 1);
+    });
+
+    // Pause on hover
+    carousel.addEventListener('mouseenter', () => {
+      clearTimeout(autoTimer);
+      progress.classList.remove('is-animating');
+    });
+    carousel.addEventListener('mouseleave', () => resetProgress());
+
+    // Init
+    goToSlide(0);
+
+    // ---- Sidebar active link ----
+    const sections = document.querySelectorAll('.bui-section');
+    const navLinks = document.querySelectorAll('.bui-sidebar__nav a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => {
+            a.classList.toggle('is-active', a.getAttribute('href') === '#' + entry.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+
+  </script>
+
+</body>
+</html>
