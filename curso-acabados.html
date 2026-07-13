@@ -509,115 +509,238 @@
       }
     }
 
-    /* -- PARA QUIÉN -- */
+    /* -- PARA QUIÉN v2 — expandable filmstrip -- */
     .cd-quien {
       background: var(--cream);
       padding: 104px 80px;
     }
-
     .cd-quien__inner {
       max-width: 1100px;
       margin: 0 auto;
     }
-
     .cd-quien__header {
       margin-bottom: 56px;
     }
 
-    .cd-quien__grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+    .cd-quien__tabs {
+      display: flex;
+      gap: 3px;
+      height: 380px;
     }
 
-    .cd-quien__card {
-      background: #e8e0d3;
-      padding: 44px 40px;
+    .cd-quien__tab {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      background: rgba(26,53,48,0.07);
+      cursor: pointer;
+      transition: flex 0.65s cubic-bezier(0.16,1,0.3,1), background 0.35s ease;
+    }
+    .cd-quien__tab.is-active {
+      flex: 3.5;
+      background: var(--dark);
     }
 
-    .cd-quien__card:first-child { border-radius: 8px 0 0 8px; }
-    .cd-quien__card:last-child  { border-radius: 0 8px 8px 0; }
-
-    .cd-quien__num {
+    /* Número fantasma de fondo */
+    .cd-quien__tab-ghost {
+      position: absolute;
+      bottom: -28px; right: -10px;
       font-family: 'Syne', sans-serif;
-      font-size: 40px;
+      font-style: italic;
+      font-size: 170px;
       font-weight: 700;
-      color: rgba(126,207,192,0.22);
+      color: rgba(0,0,0,0.05);
       line-height: 1;
-      margin-bottom: 22px;
+      pointer-events: none;
+      user-select: none;
+      transition: color 0.35s ease;
+    }
+    .cd-quien__tab.is-active .cd-quien__tab-ghost {
+      color: rgba(255,255,255,0.04);
     }
 
-    .cd-quien__title {
-      font-family: var(--font-sans);
-      font-size: 15px;
+    /* Número centrado — estado cerrado */
+    .cd-quien__tab-num-center {
+      position: absolute;
+      top: 42%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Syne', sans-serif;
+      font-style: italic;
+      font-size: 36px;
       font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 10px;
+      color: rgba(26,53,48,0.28);
+      line-height: 1;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+    .cd-quien__tab.is-active .cd-quien__tab-num-center { opacity: 0; }
+
+    /* Etiqueta vertical — estado cerrado */
+    .cd-quien__tab-label-v {
+      position: absolute;
+      bottom: 44px; left: 50%;
+      transform: translateX(-50%) rotate(180deg);
+      writing-mode: vertical-rl;
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(26,53,48,0.45);
+      white-space: nowrap;
+      transition: opacity 0.22s ease;
+      pointer-events: none;
+    }
+    .cd-quien__tab.is-active .cd-quien__tab-label-v { opacity: 0; }
+
+    /* Línea sage abajo */
+    .cd-quien__tab::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--sage);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+      z-index: 2;
+    }
+    .cd-quien__tab.is-active::before { transform: scaleX(1); }
+
+    /* Contenido — visible al abrir */
+    .cd-quien__tab-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 40px 40px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.4s ease 0.22s, transform 0.4s ease 0.22s;
+      pointer-events: none;
+    }
+    .cd-quien__tab.is-active .cd-quien__tab-content {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
-    .cd-quien__text {
+    .cd-quien__tab-num {
+      display: block;
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--sage);
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
+    }
+    .cd-quien__tab-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(20px, 1.9vw, 26px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.18;
+      margin-bottom: 16px;
+    }
+    .cd-quien__tab-text {
       font-size: 14px;
-      line-height: 1.72;
-      color: rgba(26,53,48,0.58);
+      line-height: 1.78;
+      color: rgba(255,255,255,0.6);
+      max-width: 340px;
+      margin-bottom: 20px;
+    }
+    .cd-quien__tab-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .cd-quien__tab-list li {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(126,207,192,0.72);
+      padding-left: 14px;
+      position: relative;
+    }
+    .cd-quien__tab-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: rgba(126,207,192,0.4);
     }
 
-    /* -- REVIEWS -- */
+    /* -- REVIEWS v2 — ticker automático -- */
     .cd-reviews {
       background: var(--dark);
-      padding: 104px 80px;
+      padding: 96px 0 104px;
     }
-
     .cd-reviews__inner {
       max-width: 1100px;
       margin: 0 auto;
+      padding: 0 80px;
     }
-
     .cd-reviews__header {
       margin-bottom: 56px;
     }
 
-    .cd-reviews__grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+    .cd-reviews__ticker-wrap {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+    }
+    .cd-reviews__ticker {
+      display: flex;
+      gap: 20px;
+      width: max-content;
+      animation: cd-reviews-scroll 50s linear infinite;
+    }
+    .cd-reviews__ticker:hover { animation-play-state: paused; }
+    @keyframes cd-reviews-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
     .cd-review {
-      background: rgba(255,255,255,0.04);
+      background: #1a3530;
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 8px;
-      padding: 36px;
+      padding: 32px;
       display: flex;
       flex-direction: column;
+      width: 320px;
+      flex-shrink: 0;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cd-review:hover {
+      border-color: rgba(126,207,192,0.28);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
 
     .cd-review__stars {
       display: flex;
       gap: 3px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       color: var(--sage);
       font-size: 13px;
     }
-
     .cd-review__text {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 19px;
+      font-size: 18px;
       font-style: italic;
       color: rgba(255,255,255,0.82);
       line-height: 1.65;
       flex: 1;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
-
     .cd-review__author {
       display: flex;
       align-items: center;
       gap: 14px;
     }
-
     .cd-review__avatar {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: rgba(126,207,192,0.12);
       border: 1px solid rgba(126,207,192,0.2);
@@ -625,45 +748,187 @@
       align-items: center;
       justify-content: center;
       font-family: 'Syne', sans-serif;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: #7ecfc0;
       flex-shrink: 0;
     }
-
     .cd-review__name {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       color: var(--white);
       margin-bottom: 2px;
     }
-
     .cd-review__role {
-      font-size: 12px;
+      font-size: 11px;
       color: rgba(255,255,255,0.38);
     }
 
-    /* Reviews — animación entrada + hover */
-    .cd-review {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out),
-                  box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    /* -- PRECIO -- */
+    .cd-precio {
+      background: var(--plum);
+      padding: 104px 80px;
+    }
+    .cd-precio__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .cd-precio__price-wrap {
+      margin: 28px 0 0;
+    }
+    .cd-precio__original {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      color: rgba(255,255,255,0.3);
+      text-decoration: line-through;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .cd-precio__badge {
+      display: inline-block;
+      background: rgba(126,207,192,0.12);
+      border: 1px solid rgba(126,207,192,0.32);
+      color: var(--sage);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+    .cd-precio__final {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(52px, 5.5vw, 76px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .cd-precio__cuotas {
+      font-size: 14px;
+      color: rgba(255,255,255,0.48);
+      line-height: 1.5;
+    }
+    .cd-precio__cuotas strong { color: rgba(255,255,255,0.82); }
+
+    .cd-precio__includes {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 36px;
+    }
+    .cd-precio__include-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.62);
+    }
+    .cd-precio__include-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sage);
+      flex-shrink: 0;
     }
 
-    .cd-review.is-visible {
-      opacity: 1;
-      transform: translateY(0);
+    .cd-precio__actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .cd-precio__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--sage);
+      color: var(--dark);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 17px 36px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .cd-precio__cta:hover { background: #a4ddd5; transform: translateY(-2px); }
+    .cd-precio__wa-link {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+    .cd-precio__wa-link:hover { color: rgba(255,255,255,1); }
+
+    /* Columna pagos */
+    .cd-precio__payments-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.32);
+      margin-bottom: 22px;
+    }
+    .cd-precio__cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+    .cd-precio__card-badge {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 9px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.72);
+      white-space: nowrap;
+    }
+    .cd-precio__spots {
+      background: rgba(255,165,0,0.06);
+      border: 1px solid rgba(255,165,0,0.18);
+      border-left: 3px solid rgba(255,165,0,0.55);
+      border-radius: 0 6px 6px 0;
+      padding: 16px 20px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.68);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .cd-precio__spots strong { color: rgba(255,255,255,0.9); }
+    .cd-precio__guarantee {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.65;
     }
 
-    .cd-review:nth-child(2) { transition-delay: 0.1s; }
-    .cd-review:nth-child(3) { transition-delay: 0.2s; }
-
-    .cd-review:hover {
-      background: rgba(255,255,255,0.07);
-      border-color: rgba(126,207,192,0.28);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px rgba(126,207,192,0.12);
-      transform: translateY(-4px);
+    .cd-precio__buy-card {
+      background: #251608;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 40px;
+      position: relative;
+      z-index: 1;
     }
 
     /* -- FAQ -- */
@@ -686,6 +951,136 @@
     .cd-faq .cd-accordion__item { border-bottom-color: rgba(26,53,48,0.12); }
     .cd-faq .cd-accordion__title { font-size: 15px; font-weight: 500; }
     .cd-faq .cd-accordion__body-inner { padding-left: 0; color: rgba(26,53,48,0.6); }
+
+    /* -- PROFESORES -- */
+    .cd-profs {
+      background: var(--plum);
+      padding: 104px 80px;
+    }
+
+    .cd-profs__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .cd-profs__hd {
+      margin-bottom: 72px;
+    }
+
+    .cd-profs__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    /* Entrada con scroll */
+    .cd-prof {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.75s var(--ease-out), transform 0.75s var(--ease-out);
+    }
+    .cd-prof:nth-child(2) { transition-delay: 0.13s; }
+    .cd-prof:nth-child(3) { transition-delay: 0.26s; }
+    .cd-prof.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Card con 3D tilt */
+    .cd-prof__card {
+      background: #251608;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: box-shadow 0.25s ease;
+      will-change: transform;
+    }
+    .cd-prof__card:hover {
+      box-shadow: 0 24px 56px rgba(0,0,0,0.5), 0 0 0 1px rgba(126,207,192,0.1);
+    }
+
+    /* Placeholder foto */
+    .cd-prof__photo-wrap {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      background: linear-gradient(155deg, rgba(45,107,94,0.22) 0%, rgba(26,16,7,0.7) 100%);
+      overflow: hidden;
+    }
+
+    .cd-prof__photo-ph {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cd-prof__photo-ph svg {
+      opacity: 0.18;
+    }
+
+    /* Número decorativo en esquina */
+    .cd-prof__photo-wrap::after {
+      content: attr(data-num);
+      position: absolute;
+      bottom: 14px;
+      right: 18px;
+      font-family: 'Syne', sans-serif;
+      font-size: 52px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.06);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    /* Brillo especular — controlled by JS */
+    .cd-prof__shine {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      transition: background 0.08s linear;
+    }
+
+    .cd-prof__info {
+      padding: 26px 28px 32px;
+    }
+
+    .cd-prof__name {
+      font-family: 'Syne', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 5px;
+    }
+
+    .cd-prof__role {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 16px;
+    }
+
+    .cd-prof__bio {
+      font-size: 13px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.42);
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .cd-profs { padding: 64px 24px; }
+      .cd-profs__grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .cd-prof__photo-wrap { aspect-ratio: 3 / 2; }
+    }
 
     /* -- CTA FINAL -- */
     .cd-cta {
@@ -859,28 +1254,56 @@
         margin: 0 auto;
       }
 
-      /* Para quién: single column */
+      /* Para quién: tabs verticales mobile */
       .cd-quien {
         padding: 64px 24px;
       }
-      .cd-quien__grid {
-        grid-template-columns: 1fr;
-        gap: 2px;
+      .cd-quien__tabs {
+        flex-direction: column;
+        height: auto;
+        gap: 3px;
       }
-      .cd-quien__card:first-child { border-radius: 8px 8px 0 0; }
-      .cd-quien__card:last-child  { border-radius: 0 0 8px 8px; }
-      .cd-quien__card { padding: 32px 28px; }
+      .cd-quien__tab {
+        min-height: 68px;
+        border-radius: 4px;
+      }
+      .cd-quien__tab.is-active {
+        min-height: 260px;
+        flex: none;
+      }
+      .cd-quien__tab-label-v { display: none; }
+      .cd-quien__tab-num-center {
+        left: 28px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .cd-quien__tab-content {
+        padding: 24px 24px;
+      }
+      .cd-quien__tab-ghost { font-size: 100px; }
 
-      /* Reviews: single column */
+      /* Reviews: ticker sigue igual en mobile */
       .cd-reviews {
-        padding: 64px 24px;
+        padding: 64px 0;
       }
-      .cd-reviews__grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+      .cd-reviews__inner {
+        padding: 0 24px;
       }
       .cd-review {
-        padding: 28px 24px;
+        width: 280px;
+        padding: 24px;
+      }
+
+      /* Precio: single column */
+      .cd-precio {
+        padding: 64px 24px;
+      }
+      .cd-precio__inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .cd-precio__buy-card {
+        padding: 28px;
       }
 
       /* FAQ */
@@ -930,6 +1353,7 @@
       <li><a href="index.html#restauracion">Restauración</a></li>
       <li><a href="index.html#cursos">Cursos</a></li>
       <li><a href="index.html#capsula">Cápsula</a></li>
+      <li><a href="biblioteca-ui.html">Biblioteca UI</a></li>
     </ul>
     <a href="index.html#contacto" class="nav__cta">Contacto</a>
     <button class="nav__hamburger" aria-label="Abrir menú" aria-expanded="false">
@@ -943,6 +1367,7 @@
     <a href="index.html#restauracion">Restauración</a>
     <a href="index.html#cursos">Cursos</a>
     <a href="index.html#capsula">Cápsula</a>
+    <a href="biblioteca-ui.html">Biblioteca UI</a>
     <a href="index.html#contacto">Contacto</a>
   </div>
 
@@ -1123,6 +1548,73 @@
 
 
   <!-- ================================
+       PROFESORES
+       ================================ -->
+  <section class="cd-profs grain-dark">
+    <div class="cd-profs__inner">
+
+      <div class="cd-profs__hd">
+        <p class="cd-tag">El equipo</p>
+        <h2 class="cd-heading cd-heading--light">Quiénes<br>te enseñan</h2>
+        <p class="cd-sub cd-sub--light" style="margin-top:14px;max-width:440px;">Ebanistas y restauradores con trayectoria real en el oficio. No hay teoría sin práctica acá.</p>
+      </div>
+
+      <div class="cd-profs__grid">
+
+        <article class="cd-prof">
+          <div class="cd-prof__card">
+            <div class="cd-prof__photo-wrap" data-num="01">
+              <div class="cd-prof__photo-ph">
+                <img src="assets/images/profe 1.png" alt="Profesor 1" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+              </div>
+              <div class="cd-prof__shine"></div>
+            </div>
+            <div class="cd-prof__info">
+              <h3 class="cd-prof__name">Nombre Apellido</h3>
+              <span class="cd-prof__role">Restaurador · Ebanista</span>
+              <p class="cd-prof__bio">Especialista en madera maciza con más de 15 años restaurando piezas de autor y muebles de época. Formado en el oficio desde el taller familiar.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="cd-prof">
+          <div class="cd-prof__card">
+            <div class="cd-prof__photo-wrap" data-num="02">
+              <div class="cd-prof__photo-ph">
+                <img src="assets/images/profe 2.png" alt="Profesor 2" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+              </div>
+              <div class="cd-prof__shine"></div>
+            </div>
+            <div class="cd-prof__info">
+              <h3 class="cd-prof__name">Nombre Apellido</h3>
+              <span class="cd-prof__role">Acabados · Conservación</span>
+              <p class="cd-prof__bio">Formada en conservación preventiva, trabaja con materiales naturales y técnicas de laboratorio aplicadas a la restauración cotidiana.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="cd-prof">
+          <div class="cd-prof__card">
+            <div class="cd-prof__photo-wrap" data-num="03">
+              <div class="cd-prof__photo-ph">
+                <img src="assets/images/profe 3.png" alt="Profesor 3" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+              </div>
+              <div class="cd-prof__shine"></div>
+            </div>
+            <div class="cd-prof__info">
+              <h3 class="cd-prof__name">Nombre Apellido</h3>
+              <span class="cd-prof__role">Diseño estructural</span>
+              <p class="cd-prof__bio">Ebanista especializado en estructura y diseño de taller. Docente con enfoque en comprender el material antes de intervenir.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================
        CERTIFICADO
        ================================ -->
   <section class="cd-cert grain-dark">
@@ -1169,30 +1661,57 @@
         <h2 class="cd-heading cd-heading--dark">¿Para quién<br>es este curso?</h2>
       </div>
 
-      <div class="cd-quien__grid">
+      <div class="cd-quien__tabs">
 
-        <div class="cd-quien__card">
-          <div class="cd-quien__num">01</div>
-          <h3 class="cd-quien__title">Restauradores con base técnica</h3>
-          <p class="cd-quien__text">
-            Personas que ya trabajan con madera y quieren elevar el nivel de terminación de sus piezas con criterio profesional.
-          </p>
+        <div class="cd-quien__tab is-active" data-quien="0">
+          <div class="cd-quien__tab-ghost" aria-hidden="true">01</div>
+          <div class="cd-quien__tab-num-center" aria-hidden="true">01</div>
+          <div class="cd-quien__tab-label-v">Restauradores</div>
+          <div class="cd-quien__tab-content">
+            <h3 class="cd-quien__tab-title">Restauradores con base técnica</h3>
+            <p class="cd-quien__tab-text">
+              Personas que ya trabajan con madera y quieren elevar el nivel de terminación de sus piezas con criterio profesional. Aprenden a nominar, combinar y controlar cada acabado con precisión.
+            </p>
+            <ul class="cd-quien__tab-list">
+              <li>Ebanistas y carpinteros</li>
+              <li>Restauradores independientes</li>
+              <li>Técnicos en mueblería</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="cd-quien__card">
-          <div class="cd-quien__num">02</div>
-          <h3 class="cd-quien__title">Diseñadores de interiores</h3>
-          <p class="cd-quien__text">
-            Profesionales del diseño que necesitan entender el lenguaje del acabado para especificar, dirigir o supervisar trabajos en obra.
-          </p>
+        <div class="cd-quien__tab" data-quien="1">
+          <div class="cd-quien__tab-ghost" aria-hidden="true">02</div>
+          <div class="cd-quien__tab-num-center" aria-hidden="true">02</div>
+          <div class="cd-quien__tab-label-v">Diseñadores</div>
+          <div class="cd-quien__tab-content">
+            <h3 class="cd-quien__tab-title">Diseñadores de interiores</h3>
+            <p class="cd-quien__tab-text">
+              Profesionales del diseño que necesitan entender el lenguaje del acabado para especificar, dirigir o supervisar trabajos en obra con criterio técnico propio.
+            </p>
+            <ul class="cd-quien__tab-list">
+              <li>Diseñadores de interiores</li>
+              <li>Arquitectos y decoradores</li>
+              <li>Directores de arte</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="cd-quien__card">
-          <div class="cd-quien__num">03</div>
-          <h3 class="cd-quien__title">Coleccionistas y entusiastas</h3>
-          <p class="cd-quien__text">
-            Quienes tienen piezas valiosas en su hogar y quieren saber cómo cuidarlas, restaurarlas y protegerlas con el mismo criterio que un especialista.
-          </p>
+        <div class="cd-quien__tab" data-quien="2">
+          <div class="cd-quien__tab-ghost" aria-hidden="true">03</div>
+          <div class="cd-quien__tab-num-center" aria-hidden="true">03</div>
+          <div class="cd-quien__tab-label-v">Coleccionistas</div>
+          <div class="cd-quien__tab-content">
+            <h3 class="cd-quien__tab-title">Coleccionistas y entusiastas</h3>
+            <p class="cd-quien__tab-text">
+              Quienes tienen piezas valiosas en su hogar y quieren saber cómo cuidarlas, restaurarlas y protegerlas con el mismo criterio que un especialista.
+            </p>
+            <ul class="cd-quien__tab-list">
+              <li>Coleccionistas de antigüedades</li>
+              <li>Amantes del diseño clásico</li>
+              <li>Propietarios de piezas únicas</li>
+            </ul>
+          </div>
         </div>
 
       </div>
@@ -1210,51 +1729,232 @@
         <h2 class="cd-heading cd-heading--light">Lo que dicen<br>quienes cursaron</h2>
       </div>
 
-      <div class="cd-reviews__grid">
+      <div class="cd-reviews__ticker-wrap">
+        <div class="cd-reviews__ticker">
 
-        <div class="cd-review">
-          <div class="cd-review__stars">★★★★★</div>
-          <p class="cd-review__text">
-            "Después de años lijando y aplicando barniz sin entender bien por qué, este curso me dio el marco que me faltaba. Cada clase fue densa y súper práctica."
-          </p>
-          <div class="cd-review__author">
-            <div class="cd-review__avatar">MR</div>
-            <div>
-              <p class="cd-review__name">Martina Rodríguez</p>
-              <p class="cd-review__role">Restauradora independiente, CABA</p>
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"Después de años lijando y aplicando barniz sin entender bien por qué, este curso me dio el marco que me faltaba. Cada clase fue densa y súper práctica."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">MR</div>
+              <div>
+                <p class="cd-review__name">Martina Rodríguez</p>
+                <p class="cd-review__role">Restauradora independiente, CABA</p>
+              </div>
             </div>
           </div>
+
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"La clase de pátinas me cambió la cabeza. Ahora puedo replicar acabados envejecidos que antes me salían al azar. El taller es un lugar increíble para aprender."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">FG</div>
+              <div>
+                <p class="cd-review__name">Federico Garmendia</p>
+                <p class="cd-review__role">Ebanista, Palermo</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"Soy diseñadora y no tenía experiencia técnica, pero el curso está muy bien estructurado. Salí sabiendo especificar acabados con fundamento. Vale cada peso."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">CL</div>
+              <div>
+                <p class="cd-review__name">Carla Lemos</p>
+                <p class="cd-review__role">Diseñadora de interiores</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"Vine con dudas sobre si podría seguirle el ritmo al curso y me fui con tres técnicas nuevas dominadas. La explicación de los tintes al agua fue reveladora."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">AP</div>
+              <div>
+                <p class="cd-review__name">Agustín Peralta</p>
+                <p class="cd-review__role">Carpintero, La Plata</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"El espacio del taller invita a experimentar sin miedo. Aprendí más en cuatro clases que en un año de ensayo y error en mi propio taller."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">VT</div>
+              <div>
+                <p class="cd-review__name">Valentina Torres</p>
+                <p class="cd-review__role">Coleccionista, Belgrano</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"Como arquitecta, necesitaba entender de acabados para dirigir mejor a mis proveedores. El curso me dio exactamente ese vocabulario y criterio técnico."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">SB</div>
+              <div>
+                <p class="cd-review__name">Sofía Brambilla</p>
+                <p class="cd-review__role">Arquitecta de interiores</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Duplicado para loop infinito -->
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"Después de años lijando y aplicando barniz sin entender bien por qué, este curso me dio el marco que me faltaba. Cada clase fue densa y súper práctica."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">MR</div>
+              <div>
+                <p class="cd-review__name">Martina Rodríguez</p>
+                <p class="cd-review__role">Restauradora independiente, CABA</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"La clase de pátinas me cambió la cabeza. Ahora puedo replicar acabados envejecidos que antes me salían al azar. El taller es un lugar increíble para aprender."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">FG</div>
+              <div>
+                <p class="cd-review__name">Federico Garmendia</p>
+                <p class="cd-review__role">Ebanista, Palermo</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"Soy diseñadora y no tenía experiencia técnica, pero el curso está muy bien estructurado. Salí sabiendo especificar acabados con fundamento. Vale cada peso."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">CL</div>
+              <div>
+                <p class="cd-review__name">Carla Lemos</p>
+                <p class="cd-review__role">Diseñadora de interiores</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"Vine con dudas sobre si podría seguirle el ritmo al curso y me fui con tres técnicas nuevas dominadas. La explicación de los tintes al agua fue reveladora."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">AP</div>
+              <div>
+                <p class="cd-review__name">Agustín Peralta</p>
+                <p class="cd-review__role">Carpintero, La Plata</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"El espacio del taller invita a experimentar sin miedo. Aprendí más en cuatro clases que en un año de ensayo y error en mi propio taller."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">VT</div>
+              <div>
+                <p class="cd-review__name">Valentina Torres</p>
+                <p class="cd-review__role">Coleccionista, Belgrano</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-review">
+            <div class="cd-review__stars">★★★★★</div>
+            <p class="cd-review__text">"Como arquitecta, necesitaba entender de acabados para dirigir mejor a mis proveedores. El curso me dio exactamente ese vocabulario y criterio técnico."</p>
+            <div class="cd-review__author">
+              <div class="cd-review__avatar">SB</div>
+              <div>
+                <p class="cd-review__name">Sofía Brambilla</p>
+                <p class="cd-review__role">Arquitecta de interiores</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================
+       PRECIO
+       ================================ -->
+  <section class="cd-precio grain-dark">
+    <div class="cd-precio__inner">
+
+      <!-- Columna izquierda: contexto + qué incluye -->
+      <div>
+        <p class="cd-tag" style="color:#7ecfc0;">Inversión</p>
+        <h2 class="cd-heading cd-heading--light">Curso de Acabados<br>Profesionales</h2>
+        <p style="font-size:15px;color:rgba(255,255,255,0.45);margin:18px 0 36px;line-height:1.7;">4 clases intensivas en el taller RAIZ. Grupos de máximo 6 personas, materiales incluidos y certificado de aprobación.</p>
+
+        <ul class="cd-precio__includes">
+          <li class="cd-precio__include-item">
+            <span class="cd-precio__include-dot"></span>4 clases de 3–4 hs cada una
+          </li>
+          <li class="cd-precio__include-item">
+            <span class="cd-precio__include-dot"></span>Todos los materiales y productos
+          </li>
+          <li class="cd-precio__include-item">
+            <span class="cd-precio__include-dot"></span>Grupo máximo de 6 personas
+          </li>
+          <li class="cd-precio__include-item">
+            <span class="cd-precio__include-dot"></span>Acceso al taller RAIZ, Palermo
+          </li>
+          <li class="cd-precio__include-item">
+            <span class="cd-precio__include-dot"></span>Certificado de aprobación RAIZ
+          </li>
+          <li class="cd-precio__include-item">
+            <span class="cd-precio__include-dot"></span>Guía de productos y proveedores
+          </li>
+        </ul>
+      </div>
+
+      <!-- Columna derecha: card de compra -->
+      <div class="cd-precio__buy-card">
+
+        <div class="cd-precio__price-wrap" style="margin-top:0;">
+          <span class="cd-precio__original">$68.000</span>
+          <span class="cd-precio__badge">Descuento de lanzamiento</span>
+          <span class="cd-precio__final">$52.000</span>
+          <p class="cd-precio__cuotas">o <strong>3 cuotas sin interés</strong> de $17.333</p>
         </div>
 
-        <div class="cd-review">
-          <div class="cd-review__stars">★★★★★</div>
-          <p class="cd-review__text">
-            "La clase de pátinas me cambió la cabeza. Ahora puedo replicar acabados envejecidos que antes me salían al azar. El taller es un lugar increíble para aprender."
-          </p>
-          <div class="cd-review__author">
-            <div class="cd-review__avatar">FG</div>
-            <div>
-              <p class="cd-review__name">Federico Garmendia</p>
-              <p class="cd-review__role">Ebanista, Palermo</p>
-            </div>
-          </div>
+        <div class="cd-precio__spots" style="margin-bottom:28px;">
+          <strong>Próximos grupos:</strong> Agosto y Septiembre 2025. Cupos limitados a 6 personas.
         </div>
 
-        <div class="cd-review">
-          <div class="cd-review__stars">★★★★★</div>
-          <p class="cd-review__text">
-            "Soy diseñadora y no tenía experiencia técnica, pero el curso está muy bien estructurado. Salí sabiendo especificar acabados con fundamento. Vale cada peso."
-          </p>
-          <div class="cd-review__author">
-            <div class="cd-review__avatar">CL</div>
-            <div>
-              <p class="cd-review__name">Carla Lemos</p>
-              <p class="cd-review__role">Diseñadora de interiores</p>
-            </div>
-          </div>
+        <a href="https://wa.me/5491100000000" target="_blank" rel="noopener" class="cd-precio__cta" style="width:100%;justify-content:center;">
+          Adquirir el curso
+        </a>
+        <a href="index.html#contacto" class="cd-precio__wa-link" style="display:block;text-align:center;margin-top:14px;">Hacer una consulta primero</a>
+
+        <div style="height:1px;background:rgba(255,255,255,0.08);margin:28px 0;"></div>
+
+        <p class="cd-precio__payments-label">Medios de pago</p>
+        <div class="cd-precio__cards">
+          <span class="cd-precio__card-badge">Visa</span>
+          <span class="cd-precio__card-badge">Mastercard</span>
+          <span class="cd-precio__card-badge">Naranja X</span>
+          <span class="cd-precio__card-badge">Transferencia</span>
+          <span class="cd-precio__card-badge">Efectivo</span>
+          <span class="cd-precio__card-badge">MercadoPago</span>
+        </div>
+
+        <div class="cd-precio__guarantee">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:2px;color:#7ecfc0;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          50% de seña para reservar. Saldo el primer día del curso.
         </div>
 
       </div>
+
     </div>
   </section>
 
@@ -1419,6 +2119,22 @@
   </footer>
 
 
+  <!-- RAIZ Bot -->
+  <div class="raiz-bot" id="raizBot">
+    <div class="raiz-bot__bubble" id="raizBotBubble">
+      <button class="raiz-bot__close" id="raizBotClose" aria-label="Cerrar">×</button>
+      <p class="raiz-bot__name">Asistente RAIZ</p>
+      <p class="raiz-bot__msg">¡Hola! ¿Tenés consultas sobre el curso? Con gusto te ayudamos a elegir el grupo ideal.</p>
+      <a href="https://wa.me/5491100000000" target="_blank" rel="noopener" class="raiz-bot__cta">Escribinos por WhatsApp</a>
+    </div>
+    <div class="raiz-bot__avatar-wrap">
+      <button class="raiz-bot__trigger" id="raizBotTrigger" aria-label="Chat con RAIZ">
+        <img src="assets/images/BOT.png" alt="Asistente RAIZ">
+      </button>
+      <span class="raiz-bot__badge" aria-hidden="true"></span>
+    </div>
+  </div>
+
   <!-- ================================
        SCRIPTS
        ================================ -->
@@ -1435,17 +2151,46 @@
       });
     }
 
-    // Reviews — entrada con scroll
-    const reviewObserver = new IntersectionObserver((entries) => {
+    // Para quién — filmstrip tabs
+    document.querySelectorAll('.cd-quien__tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.cd-quien__tab').forEach(t => t.classList.remove('is-active'));
+        tab.classList.add('is-active');
+      });
+    });
+
+    // Profesores — entrada con scroll
+    const profObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
-          reviewObserver.unobserve(entry.target);
+          profObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.cd-prof').forEach(el => profObserver.observe(el));
 
-    document.querySelectorAll('.cd-review').forEach(el => reviewObserver.observe(el));
+    // Profesores — efecto tilt 3D + brillo especular
+    document.querySelectorAll('.cd-prof__card').forEach(card => {
+      const shine = card.querySelector('.cd-prof__shine');
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const dx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+        const dy = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
+        card.style.transform = `perspective(800px) rotateY(${dx * 7}deg) rotateX(${-dy * 5}deg) translateZ(8px)`;
+        if (shine) {
+          shine.style.background = `radial-gradient(circle at ${(dx + 1) * 50}% ${(dy + 1) * 50}%, rgba(255,255,255,0.07) 0%, transparent 55%)`;
+        }
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.55s cubic-bezier(0.16,1,0.3,1), box-shadow 0.25s ease';
+        card.style.transform = '';
+        if (shine) shine.style.background = '';
+        setTimeout(() => { card.style.transition = ''; }, 560);
+      });
+    });
 
     // Steps (programa del curso) — pure CSS grid-template-rows animation
     document.querySelectorAll('.cd-step__trigger').forEach(btn => {

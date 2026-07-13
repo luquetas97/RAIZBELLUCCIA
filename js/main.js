@@ -277,24 +277,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ---- CURSOR: efecto pulido / lijado (solo desktop, toda la web) ---- */
+  /* ---- CURSOR: aserrín / virutas (solo desktop) ---- */
   (() => {
-    // Desactivar en touch/mobile (sin mouse real)
     if (window.matchMedia('(hover: none)').matches) return;
 
-    // ─── CONFIG — editá estos valores para ajustar el efecto ───────────────
-    const LERP       = 0.13;            // suavidad del ring (0=más lag, 1=instantáneo)
-    const P_COUNT    = 4;               // partículas por evento
-    const P_LIFE     = 420;             // ms que vive cada partícula
-    const P_SPREAD   = 22;              // px — radio de dispersión al nacer
-    const P_COLOR    = [115, 68, 32];   // RGB color del polvo de madera
-    const P_THROTTLE = 30;              // ms mínimo entre tandas de partículas
-    // ───────────────────────────────────────────────────────────────────────
-
-    // Crear elementos
-    const ring = document.createElement('div');
-    ring.className = 'cursor-ring';
-    document.body.appendChild(ring);
+    const P_COUNT    = 4;
+    const P_LIFE     = 420;
+    const P_SPREAD   = 22;
+    const P_COLOR    = [115, 68, 32];
+    const P_THROTTLE = 30;
 
     const cvs = document.createElement('canvas');
     cvs.className = 'cursor-canvas';
@@ -305,13 +296,11 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeCvs();
     window.addEventListener('resize', resizeCvs, { passive: true });
 
-    // Estado
-    let mx = -300, my = -300, rx = -300, ry = -300;
+    let mx = -300, my = -300;
     let rafRunning = false;
     let lastSpawn = 0;
     const grains = [];
 
-    // Partícula individual (viruta / polvo de madera)
     class Grain {
       constructor(x, y) {
         const angle = Math.random() * Math.PI * 2;
@@ -338,22 +327,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // RAF loop — siempre activo mientras haya mouse o partículas
     const loop = () => {
-      rx += (mx - rx) * LERP;
-      ry += (my - ry) * LERP;
-      ring.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;
-
       pCtx.clearRect(0, 0, cvs.width, cvs.height);
       const now = performance.now();
       for (let i = grains.length - 1; i >= 0; i--) {
         if (!grains[i].draw(now)) grains.splice(i, 1);
       }
       pCtx.globalAlpha = 1;
-      requestAnimationFrame(loop);
+      if (grains.length > 0) requestAnimationFrame(loop);
+      else rafRunning = false;
     };
 
-    // Spawn partículas (throttleado)
     const spawn = (x, y) => {
       const now = performance.now();
       if (now - lastSpawn < P_THROTTLE) return;
@@ -361,29 +345,14 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let i = 0; i < P_COUNT; i++) grains.push(new Grain(x, y));
     };
 
-    // Activar con el primer movimiento del mouse
     document.addEventListener('mousemove', (e) => {
       mx = e.clientX; my = e.clientY;
-
-      if (!rafRunning) {
+      spawn(mx, my);
+      if (!rafRunning && grains.length > 0) {
         rafRunning = true;
-        ring.classList.add('active');
-        document.documentElement.classList.add('raiz-cursor-active');
         loop();
       }
-
-      spawn(mx, my);
     }, { passive: true });
-
-    // Ocultar ring cuando el mouse sale de la ventana
-    document.addEventListener('mouseleave', () => ring.classList.remove('active'));
-    document.addEventListener('mouseenter', () => ring.classList.add('active'));
-
-    // Agrandar ring sobre elementos interactivos
-    document.querySelectorAll('a, button, .curso-card, .valores__slide, img').forEach(el => {
-      el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
-    });
   })();
 
   /* ---- TYPEWRITER: cita nosotros ---- */
@@ -481,51 +450,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---- TIPOS DE MADERA — filmstrip, pure CSS hover (no JS needed) ---- */
 
-  /* ---- MAGNIFIER — lupa sobre anatomía del mueble ---- */
+  /* ---- MAGNIFIER: animación veta → grietas → reveal ---- */
   const magnifierStage = document.getElementById('magnifierStage');
-  const magnifierReveal = document.getElementById('magnifierReveal');
-  const magnifierRing = document.getElementById('magnifierRing');
-
-  if (magnifierStage && magnifierReveal && magnifierRing) {
-    const R = 170; // radio de la lupa en px
-
-    let rafId = null;
-    let mouseX = 0, mouseY = 0;
-
-    magnifierStage.addEventListener('mouseenter', () => {
-      magnifierRing.style.opacity = '1';
-    });
-
-    magnifierStage.addEventListener('mouseleave', () => {
-      magnifierRing.style.opacity = '0';
-      magnifierReveal.style.clipPath = 'circle(0px at -9999px -9999px)';
-      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    });
-
-    magnifierStage.addEventListener('mousemove', (e) => {
-      const rect = magnifierStage.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-
-      if (!rafId) {
-        rafId = requestAnimationFrame(() => {
-          magnifierReveal.style.clipPath = `circle(${R}px at ${mouseX}px ${mouseY}px)`;
-          magnifierRing.style.left = mouseX + 'px';
-          magnifierRing.style.top  = mouseY + 'px';
-          rafId = null;
-        });
-      }
-    });
-  }
-
-  /* ---- MAGNIFIER: botones revelar/ocultar (mobile) ---- */
+  const magnifierRevealImg = document.getElementById('magnifierReveal');
   const revealBtn = document.getElementById('magnifierRevealBtn');
   const hideBtn   = document.getElementById('magnifierHideBtn');
-  if (revealBtn && magnifierStage) {
-    revealBtn.addEventListener('click', () => magnifierStage.classList.add('revealed'));
-  }
-  if (hideBtn && magnifierStage) {
-    hideBtn.addEventListener('click', () => magnifierStage.classList.remove('revealed'));
+
+  if (revealBtn && magnifierStage && magnifierRevealImg) {
+    let animating = false;
+
+    function runRevealAnim() {
+      if (animating) return;
+      animating = true;
+      revealBtn.style.pointerEvents = 'none';
+
+      magnifierRevealImg.style.transition = 'opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1), transform 1.1s cubic-bezier(0.4, 0, 0.2, 1)';
+      magnifierRevealImg.style.opacity = '1';
+      magnifierRevealImg.style.transform = 'scale(1)';
+
+      setTimeout(() => {
+        magnifierStage.classList.add('revealed');
+        revealBtn.style.transition = 'opacity 0.35s ease';
+        revealBtn.style.opacity = '0';
+        revealBtn.style.pointerEvents = 'none';
+        hideBtn.style.transition = 'opacity 0.35s ease';
+        hideBtn.style.opacity = '1';
+        hideBtn.style.pointerEvents = 'auto';
+        animating = false;
+      }, 1150);
+    }
+
+    revealBtn.addEventListener('click', runRevealAnim);
+
+    if (hideBtn) {
+      hideBtn.addEventListener('click', () => {
+        magnifierStage.querySelectorAll('div[style*="z-index:8"], svg[style*="z-index:9"]').forEach(el => el.remove());
+        magnifierStage.classList.remove('revealed');
+        magnifierRevealImg.style.transition = 'opacity 0.45s ease';
+        magnifierRevealImg.style.opacity    = '0';
+        // Restaurar botones
+        hideBtn.style.opacity = '0';
+        hideBtn.style.pointerEvents = 'none';
+        revealBtn.style.opacity = '1';
+        revealBtn.style.pointerEvents = 'auto';
+        animating = false;
+        setTimeout(() => { magnifierRevealImg.style.transition = ''; }, 500);
+      });
+    }
   }
 
   /* ---- PAGE TRANSITION — salida hacia páginas de curso ---- */
@@ -538,6 +509,30 @@ document.addEventListener('DOMContentLoaded', () => {
         pt.classList.add('pt-entering');
         setTimeout(() => { window.location.href = dest; }, 750);
       });
+    });
+  }
+
+  /* ---- RAIZ BOT — chat widget flotante ---- */
+  const raizBotBubble  = document.getElementById('raizBotBubble');
+  const raizBotTrigger = document.getElementById('raizBotTrigger');
+  const raizBotClose   = document.getElementById('raizBotClose');
+
+  if (raizBotBubble && raizBotTrigger) {
+    let dismissed = false;
+
+    setTimeout(() => {
+      if (!dismissed) raizBotBubble.classList.add('is-visible');
+    }, 10000);
+
+    raizBotTrigger.addEventListener('click', () => {
+      const open = raizBotBubble.classList.toggle('is-visible');
+      dismissed = !open;
+    });
+
+    raizBotClose.addEventListener('click', e => {
+      e.stopPropagation();
+      raizBotBubble.classList.remove('is-visible');
+      dismissed = true;
     });
   }
 

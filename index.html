@@ -56,7 +56,7 @@
        ================================ -->
   <section class="hero" aria-label="Bienvenida">
 
-    <!-- Video scrub -->
+    <!-- Video scrub — desktop -->
     <video
       class="hero__video"
       src="assets/video/HERO.mp4"
@@ -65,14 +65,25 @@
       preload="auto"
       aria-hidden="true"
     ></video>
+
+    <!-- Video loop — mobile -->
+    <video
+      class="hero__video-mobile"
+      src="assets/video/HERO MOBILE.mp4"
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+    ></video>
+
     <div class="hero__video-overlay"></div>
 
     <div class="hero__content">
       <h1 class="hero__title">
-        <span class="line"><span>Diseñamos</span></span>
-        <span class="line"><span>experiencias.</span></span>
-        <span class="line"><span>Creamos</span></span>
-        <span class="line"><span>legados.</span></span>
+        <span class="line"><span>Del árbol</span></span>
+        <span class="line"><span>al legado</span></span>
       </h1>
 
       <p class="hero__sub">
@@ -89,11 +100,6 @@
         </a>
         <a href="#cursos" class="btn-ghost">Ver cursos</a>
       </div>
-    </div>
-
-    <div class="hero__scroll" aria-hidden="true">
-      <div class="hero__scroll-line"></div>
-      <span>Scroll</span>
     </div>
 
     <!-- TICKER -->
@@ -209,7 +215,6 @@
           <div class="curso-row__shade"></div>
           <div class="curso-row__inner">
             <div class="curso-row__top">
-              <span class="curso-row__num" aria-hidden="true">01</span>
               <span class="curso-row__level">Nivel inicial</span>
             </div>
             <div class="curso-row__main">
@@ -234,7 +239,6 @@
           <div class="curso-row__shade"></div>
           <div class="curso-row__inner">
             <div class="curso-row__top">
-              <span class="curso-row__num" aria-hidden="true">02</span>
               <span class="curso-row__level">Nivel intermedio</span>
             </div>
             <div class="curso-row__main">
@@ -259,7 +263,6 @@
           <div class="curso-row__shade"></div>
           <div class="curso-row__inner">
             <div class="curso-row__top">
-              <span class="curso-row__num" aria-hidden="true">03</span>
               <span class="curso-row__level">Nivel avanzado</span>
             </div>
             <div class="curso-row__main">
@@ -474,9 +477,10 @@
         <div class="valores__bg" style="background-image: url('assets/images/banner 1.png');"></div>
         <div class="valores__overlay"></div>
         <div class="valores__slide-inner">
-          <span class="valores__num">01</span>
-          <div class="valores__body">
-            <h3 class="valores__title">Volver al origen,<br>sin volver al pasado.</h3>
+          <div class="valores__inner-wrap">
+            <div class="valores__body">
+              <h3 class="valores__title">Volver al origen,<br>sin volver al pasado.</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -486,9 +490,10 @@
         <div class="valores__bg" style="background-image: url('assets/images/banner 2.png');"></div>
         <div class="valores__overlay"></div>
         <div class="valores__slide-inner">
-          <span class="valores__num">02</span>
-          <div class="valores__body">
-            <h3 class="valores__title">Cada marca cuenta<br>una forma de hacer.</h3>
+          <div class="valores__inner-wrap">
+            <div class="valores__body">
+              <h3 class="valores__title">Cada marca cuenta<br>una forma de hacer.</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -498,9 +503,10 @@
         <div class="valores__bg" style="background-image: url('assets/images/banner 3.png');"></div>
         <div class="valores__overlay"></div>
         <div class="valores__slide-inner">
-          <span class="valores__num">03</span>
-          <div class="valores__body">
-            <h3 class="valores__title">Piezas con historia,<br>acabados del presente.</h3>
+          <div class="valores__inner-wrap">
+            <div class="valores__body">
+              <h3 class="valores__title">Piezas con historia,<br>acabados del presente.</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -613,37 +619,63 @@
        ================================ -->
   <section class="magnifier" id="anatomia">
 
-    <!-- Panel izquierdo con texto -->
-    <div class="magnifier__panel">
-      <span class="magnifier__label">Diseño estructural</span>
-      <h2 class="magnifier__title">Lo que no<br>se ve<br>sostiene todo.</h2>
-      <p class="magnifier__desc">Cada mueble RAIZ está construido sobre una arquitectura interior precisa. Pasá el cursor sobre la imagen para revelar el esqueleto que da forma al objeto.</p>
-      <div class="magnifier__hint">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
-          <path d="M2 8h12M9 3l5 5-5 5"/>
-        </svg>
-        Deslizá para revelar la estructura
-      </div>
-    </div>
-
-    <!-- Stage: imagen base + imagen esqueleto + anillo -->
     <div class="magnifier__stage" id="magnifierStage">
-      <div class="magnifier__mobile-title">Lo que no se ve<br>sostiene todo.</div>
+
+      <!-- Imágenes -->
       <img src="assets/images/mueble listo.png" alt="Mueble terminado RAIZ" class="magnifier__base">
       <img src="assets/images/mueble ergonomico.png" alt="Estructura del mueble" class="magnifier__reveal" id="magnifierReveal">
       <div class="magnifier__ring" id="magnifierRing"></div>
-      <button class="magnifier__reveal-btn" id="magnifierRevealBtn" aria-label="Revelar estructura interna">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-        </svg>
-        Revelar estructura
-      </button>
-      <button class="magnifier__hide-btn" id="magnifierHideBtn" aria-label="Ocultar estructura">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
-        </svg>
-        Ocultar
-      </button>
+
+      <!-- Degradado izq → der -->
+      <div class="magnifier__overlay"></div>
+
+      <!-- Panel de texto — overlay sobre el degradado -->
+      <div class="magnifier__panel">
+        <div class="magnifier__panel-inner">
+          <span class="magnifier__label">Diseño estructural</span>
+          <h2 class="magnifier__title">Lo que no se ve<br>sostiene todo.</h2>
+          <p class="magnifier__desc">Cada mueble RAIZ está construido sobre una arquitectura interior precisa. Hacé clic para revelar el esqueleto que da forma al objeto.</p>
+          <div class="magnifier__actions">
+            <button class="magnifier__reveal-btn" id="magnifierRevealBtn" aria-label="Revelar estructura interna">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+              Revelar estructura
+            </button>
+            <button class="magnifier__hide-btn" id="magnifierHideBtn" aria-label="Ocultar estructura">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+              Ocultar estructura
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anotaciones técnicas flotantes — lado derecho -->
+      <div class="magnifier__annotations" aria-hidden="true">
+        <div class="magnifier__note magnifier__note--1">
+          <span class="magnifier__note-num">01</span>
+          <span class="magnifier__note-line"></span>
+          <span class="magnifier__note-text">Ensamble de espiga</span>
+        </div>
+        <div class="magnifier__note magnifier__note--2">
+          <span class="magnifier__note-num">02</span>
+          <span class="magnifier__note-line"></span>
+          <span class="magnifier__note-text">Estructura portante</span>
+        </div>
+        <div class="magnifier__note magnifier__note--3">
+          <span class="magnifier__note-num">03</span>
+          <span class="magnifier__note-line"></span>
+          <span class="magnifier__note-text">Costillas de refuerzo</span>
+        </div>
+        <div class="magnifier__note magnifier__note--4">
+          <span class="magnifier__note-num">04</span>
+          <span class="magnifier__note-line"></span>
+          <span class="magnifier__note-text">Base calibrada</span>
+        </div>
+      </div>
+
     </div>
 
   </section>
@@ -782,6 +814,22 @@
     <img src="assets/images/logo blanco.png" alt="" class="page-transition__logo">
     <span class="page-transition__tagline">Ebanistería &amp; Restauración</span>
     <div class="page-transition__bar"></div>
+  </div>
+
+  <!-- RAIZ Bot -->
+  <div class="raiz-bot" id="raizBot">
+    <div class="raiz-bot__bubble" id="raizBotBubble">
+      <button class="raiz-bot__close" id="raizBotClose" aria-label="Cerrar">×</button>
+      <p class="raiz-bot__name">Asistente RAIZ</p>
+      <p class="raiz-bot__msg">¡Hola! ¿Tenés alguna consulta sobre nuestros servicios o cursos? Estamos para ayudarte.</p>
+      <a href="https://wa.me/5491100000000" target="_blank" rel="noopener" class="raiz-bot__cta">Escribinos por WhatsApp</a>
+    </div>
+    <div class="raiz-bot__avatar-wrap">
+      <button class="raiz-bot__trigger" id="raizBotTrigger" aria-label="Chat con RAIZ">
+        <img src="assets/images/BOT.png" alt="Asistente RAIZ">
+      </button>
+      <span class="raiz-bot__badge" aria-hidden="true"></span>
+    </div>
   </div>
 
   <script src="js/main.js"></script>
