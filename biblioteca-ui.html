@@ -720,9 +720,7 @@
         grid-template-columns: 1fr;
         padding: 0 24px;
       }
-      .bui-sidebar {
-        display: none;
-      }
+      .bui-sidebar { display: none; }
       .bui-swatches,
       .bui-swatches--secondary { grid-template-columns: repeat(3, 1fr); }
       .bui-components-grid { grid-template-columns: 1fr; }
@@ -730,15 +728,118 @@
       .bui-spacing-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
-    @media (max-width: 640px) {
-      .bui-hero { padding: calc(var(--nav-h) + 48px) 24px 56px; }
-      .bui-hero__meta { flex-direction: column; gap: 20px; }
+    @media (max-width: 768px) {
+
+      /* ---- Layout general ---- */
+      .bui-content { padding: 48px 0 72px; }
+      .bui-section { margin-bottom: 56px; }
+      .bui-section__header { margin-bottom: 28px; }
+
+      /* ---- Hero ---- */
+      .bui-hero { padding: calc(var(--nav-h) + 40px) 24px 48px; }
+      .bui-hero__title { font-size: clamp(36px, 10vw, 52px); line-height: 1.06; }
+      .bui-hero__desc { font-size: 14px; line-height: 1.65; }
+      .bui-hero__meta { flex-direction: column; gap: 16px; margin-top: 36px; }
+
+      /* ---- Colores ---- */
       .bui-swatches { grid-template-columns: repeat(2, 1fr); }
-      .bui-btn-row { grid-template-columns: 1fr; }
-      .bui-font-card { grid-template-columns: 1fr; }
-      .bui-font-card__meta { border-right: none; border-bottom: 1px solid rgba(26,53,48,0.1); padding-right: 0; padding-bottom: 20px; }
-      .bui-text-demo { padding: 32px 24px; }
+      .bui-swatches--secondary { grid-template-columns: repeat(2, 1fr); }
+
+      /* ---- Tipografía — font cards ---- */
+      .bui-font-card {
+        grid-template-columns: 1fr;
+        padding: 24px 20px;
+        gap: 16px;
+      }
+      .bui-font-card__meta {
+        border-right: none;
+        border-bottom: 1px solid rgba(26,53,48,0.1);
+        padding-right: 0;
+        padding-bottom: 16px;
+      }
+      .bui-font-card__preview {
+        overflow: hidden;
+        word-break: break-word;
+      }
+      /* Recorta el texto de preview grande para que no desborde */
+      .bui-font-card__preview span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
+        font-size: 22px !important;
+        line-height: 1.3 !important;
+      }
+      .bui-font-card__preview span:not(:first-child) {
+        font-size: 14px !important;
+        white-space: normal;
+      }
+
+      /* ---- Escala tipográfica ---- */
+      .bui-type-row {
+        grid-template-columns: 56px 1fr;
+        padding: 14px 16px;
+        gap: 12px;
+        overflow: hidden;
+      }
+      .bui-type-row span:last-child {
+        overflow: hidden;
+        font-size: clamp(16px, 5vw, 28px) !important;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      /* ---- Texturas ---- */
+      .bui-texture-card { min-height: 180px; padding: 24px; }
+
+      /* ---- Botones ---- */
+      .bui-btn-row {
+        grid-template-columns: 1fr;
+        padding: 24px 20px;
+        gap: 18px;
+      }
+      .bui-btn-row__items { gap: 12px; }
+
+      /* ---- Texto demo ---- */
+      .bui-text-demo { padding: 24px 20px; overflow: hidden; }
+      .bui-text-demo__block { padding: 22px 0; word-break: break-word; }
+
+      /* ---- Componentes: step del programa → apilado ---- */
+      .bui-step-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+      }
+      .bui-step-grid > div:first-child {
+        font-size: 32px !important;
+        padding-top: 20px !important;
+        text-align: left !important;
+        padding-bottom: 0;
+      }
+
+      /* ---- Componentes: banner valor → 1 columna ---- */
+      .bui-banner-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .bui-banner-grid > div {
+        padding: 24px 20px !important;
+      }
+
+      /* ---- Espaciado ---- */
+      .bui-spacing-grid { grid-template-columns: repeat(2, 1fr); }
+      .bui-spacing-swatch { padding: 16px 12px; }
+
+      /* ---- Carrusel ---- */
       .bui-carousel { aspect-ratio: 4/3; }
+      .bui-carousel__caption { left: 16px; right: 16px; bottom: 16px; }
+      .bui-carousel__btn { width: 36px; height: 36px; }
+      .bui-carousel__btn--prev { left: 10px; }
+      .bui-carousel__btn--next { right: 10px; }
+
+      /* ---- Miniaturas galería → 3 columnas ---- */
+      .bui-thumbs-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
     }
 
   </style>
@@ -1269,7 +1370,7 @@
           <div class="bui-component-card bui-component-card--full">
             <p class="bui-component-card__label">Step del programa (is-open)</p>
             <div class="bui-component-card__inner">
-              <div style="display:grid;grid-template-columns:80px 1fr;gap:0 24px;">
+              <div class="bui-step-grid" style="display:grid;grid-template-columns:80px 1fr;gap:0 24px;">
                 <div style="font-family:'Syne',sans-serif;font-style:italic;font-size:52px;font-weight:700;color:var(--teal);line-height:1;padding-top:26px;text-align:right;">01</div>
                 <div style="border-top:1px solid rgba(26,53,48,0.12);">
                   <div style="display:flex;justify-content:space-between;align-items:center;padding:26px 0;gap:16px;">
@@ -1298,7 +1399,7 @@
           <div class="bui-component-card bui-component-card--full">
             <p class="bui-component-card__label">Banner valor (separador)</p>
             <div class="bui-component-card__inner" style="padding:0;">
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);">
+              <div class="bui-banner-grid" style="display:grid;grid-template-columns:repeat(3,1fr);">
                 <div style="padding:32px 40px;background:var(--dark);display:flex;flex-direction:column;gap:12px;">
                   <p style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:var(--font-sans);">01</p>
                   <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:white;line-height:1.3;">Madera que dura décadas</h3>
@@ -1508,7 +1609,7 @@
         </div>
 
         <!-- Grid de miniaturas -->
-        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-top:3px;border-radius:8px;overflow:hidden;">
+        <div class="bui-thumbs-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-top:3px;border-radius:8px;overflow:hidden;">
           <img src="assets/images/1.png" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;cursor:pointer;opacity:0.75;transition:opacity 0.2s;" onclick="goToSlide(0)" class="carousel-thumb">
           <img src="assets/images/2.png" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;cursor:pointer;opacity:0.75;transition:opacity 0.2s;" onclick="goToSlide(1)" class="carousel-thumb">
           <img src="assets/images/3.png" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;cursor:pointer;opacity:0.75;transition:opacity 0.2s;" onclick="goToSlide(2)" class="carousel-thumb">
